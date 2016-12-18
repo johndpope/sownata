@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E2FC6431CCBC7E2000F1464 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E2FC63C1CCBC76F000F1464 /* Charts.framework */; };
+		4E2FC6441CCBC7E2000F1464 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4E2FC63C1CCBC76F000F1464 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4E8137D11CCFC46D00F39E2A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8137D01CCFC46D00F39E2A /* LogEntry.swift */; };
+		4EA1936B1CCD050C00F212A4 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA1936A1CCD050C00F212A4 /* LaunchViewController.swift */; };
+		4EA1936D1CCD06AD00F212A4 /* DataTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */; };
+		4EA1936F1CCD073300F212A4 /* ManualDataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA1936E1CCD073300F212A4 /* ManualDataEntryViewController.swift */; };
+		4EA193711CCD07B100F212A4 /* ImportDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA193701CCD07B100F212A4 /* ImportDataViewController.swift */; };
 		4ED98FD01CC68FE700198A8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED98FCF1CC68FE700198A8A /* AppDelegate.swift */; };
-		4ED98FD21CC68FE700198A8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED98FD11CC68FE700198A8A /* ViewController.swift */; };
+		4ED98FD21CC68FE700198A8A /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED98FD11CC68FE700198A8A /* DashboardViewController.swift */; };
 		4ED98FD51CC68FE700198A8A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ED98FD31CC68FE700198A8A /* Main.storyboard */; };
 		4ED98FD71CC68FE700198A8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4ED98FD61CC68FE700198A8A /* Assets.xcassets */; };
 		4ED98FDA1CC68FE700198A8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ED98FD81CC68FE700198A8A /* LaunchScreen.storyboard */; };
@@ -17,6 +24,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4E2FC63B1CCBC76F000F1464 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5BA8EC401A9D14DC00CE82E1;
+			remoteInfo = "Charts-iOS";
+		};
+		4E2FC63D1CCBC76F000F1464 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A52C5C371BAC5CA400594CDD;
+			remoteInfo = "Charts-TV";
+		};
+		4E2FC63F1CCBC76F000F1464 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65B3F5BF1C7370BE000983D0;
+			remoteInfo = "Charts-OSX";
+		};
+		4E2FC6411CCBC76F000F1464 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 06AEE7A21BDC3F8B009875AE;
+			remoteInfo = ChartsTests;
+		};
+		4E2FC6451CCBC7E2000F1464 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5BA8EC3F1A9D14DC00CE82E1;
+			remoteInfo = "Charts-iOS";
+		};
 		4ED98FE11CC68FE800198A8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4ED98FC41CC68FE700198A8A /* Project object */;
@@ -33,10 +75,30 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4E2FC6471CCBC7E2000F1464 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4E2FC6441CCBC7E2000F1464 /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = Charts/Charts.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4E8137D01CCFC46D00F39E2A /* LogEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
+		4EA1936A1CCD050C00F212A4 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTabBarViewController.swift; sourceTree = "<group>"; };
+		4EA1936E1CCD073300F212A4 /* ManualDataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManualDataEntryViewController.swift; sourceTree = "<group>"; };
+		4EA193701CCD07B100F212A4 /* ImportDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportDataViewController.swift; sourceTree = "<group>"; };
 		4ED98FCC1CC68FE700198A8A /* sownata.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sownata.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4ED98FCF1CC68FE700198A8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4ED98FD11CC68FE700198A8A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4ED98FD11CC68FE700198A8A /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		4ED98FD41CC68FE700198A8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4ED98FD61CC68FE700198A8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4ED98FD91CC68FE700198A8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E2FC6431CCBC7E2000F1464 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +137,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E2FC6351CCBC76E000F1464 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4E2FC63C1CCBC76F000F1464 /* Charts.framework */,
+				4E2FC63E1CCBC76F000F1464 /* Charts.framework */,
+				4E2FC6401CCBC76F000F1464 /* Charts.framework */,
+				4E2FC6421CCBC76F000F1464 /* ChartsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		4ED98FC31CC68FE700198A8A = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +155,7 @@
 				4ED98FE31CC68FE800198A8A /* sownataTests */,
 				4ED98FEE1CC68FE800198A8A /* sownataUITests */,
 				4ED98FCD1CC68FE700198A8A /* Products */,
+				4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,12 +172,14 @@
 		4ED98FCE1CC68FE700198A8A /* sownata */ = {
 			isa = PBXGroup;
 			children = (
-				4ED98FCF1CC68FE700198A8A /* AppDelegate.swift */,
-				4ED98FD11CC68FE700198A8A /* ViewController.swift */,
+				4ED990041CC69C5900198A8A /* Supporting Files */,
+				4ED98FD11CC68FE700198A8A /* DashboardViewController.swift */,
 				4ED98FD31CC68FE700198A8A /* Main.storyboard */,
-				4ED98FD61CC68FE700198A8A /* Assets.xcassets */,
-				4ED98FD81CC68FE700198A8A /* LaunchScreen.storyboard */,
-				4ED98FDB1CC68FE700198A8A /* Info.plist */,
+				4E8137D01CCFC46D00F39E2A /* LogEntry.swift */,
+				4EA193701CCD07B100F212A4 /* ImportDataViewController.swift */,
+				4EA1936E1CCD073300F212A4 /* ManualDataEntryViewController.swift */,
+				4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */,
+				4EA1936A1CCD050C00F212A4 /* LaunchViewController.swift */,
 			);
 			path = sownata;
 			sourceTree = "<group>";
@@ -125,6 +202,17 @@
 			path = sownataUITests;
 			sourceTree = "<group>";
 		};
+		4ED990041CC69C5900198A8A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4ED98FCF1CC68FE700198A8A /* AppDelegate.swift */,
+				4ED98FD61CC68FE700198A8A /* Assets.xcassets */,
+				4ED98FD81CC68FE700198A8A /* LaunchScreen.storyboard */,
+				4ED98FDB1CC68FE700198A8A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,10 +223,12 @@
 				4ED98FC81CC68FE700198A8A /* Sources */,
 				4ED98FC91CC68FE700198A8A /* Frameworks */,
 				4ED98FCA1CC68FE700198A8A /* Resources */,
+				4E2FC6471CCBC7E2000F1464 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4E2FC6461CCBC7E2000F1464 /* PBXTargetDependency */,
 			);
 			name = sownata;
 			productName = sownata;
@@ -192,13 +282,16 @@
 				TargetAttributes = {
 					4ED98FCB1CC68FE700198A8A = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 					};
 					4ED98FDF1CC68FE800198A8A = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 						TestTargetID = 4ED98FCB1CC68FE700198A8A;
 					};
 					4ED98FEA1CC68FE800198A8A = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0820;
 						TestTargetID = 4ED98FCB1CC68FE700198A8A;
 					};
 				};
@@ -214,6 +307,12 @@
 			mainGroup = 4ED98FC31CC68FE700198A8A;
 			productRefGroup = 4ED98FCD1CC68FE700198A8A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4E2FC6351CCBC76E000F1464 /* Products */;
+					ProjectRef = 4E2FC6341CCBC76E000F1464 /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4ED98FCB1CC68FE700198A8A /* sownata */,
@@ -222,6 +321,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4E2FC63C1CCBC76F000F1464 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 4E2FC63B1CCBC76F000F1464 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4E2FC63E1CCBC76F000F1464 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 4E2FC63D1CCBC76F000F1464 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4E2FC6401CCBC76F000F1464 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 4E2FC63F1CCBC76F000F1464 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4E2FC6421CCBC76F000F1464 /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = 4E2FC6411CCBC76F000F1464 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		4ED98FCA1CC68FE700198A8A /* Resources */ = {
@@ -255,7 +385,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ED98FD21CC68FE700198A8A /* ViewController.swift in Sources */,
+				4EA1936D1CCD06AD00F212A4 /* DataTabBarViewController.swift in Sources */,
+				4EA1936F1CCD073300F212A4 /* ManualDataEntryViewController.swift in Sources */,
+				4E8137D11CCFC46D00F39E2A /* LogEntry.swift in Sources */,
+				4ED98FD21CC68FE700198A8A /* DashboardViewController.swift in Sources */,
+				4EA193711CCD07B100F212A4 /* ImportDataViewController.swift in Sources */,
+				4EA1936B1CCD050C00F212A4 /* LaunchViewController.swift in Sources */,
 				4ED98FD01CC68FE700198A8A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +414,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4E2FC6461CCBC7E2000F1464 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Charts-iOS";
+			targetProxy = 4E2FC6451CCBC7E2000F1464 /* PBXContainerItemProxy */;
+		};
 		4ED98FE21CC68FE800198A8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4ED98FCB1CC68FE700198A8A /* sownata */;
@@ -400,10 +540,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = sownata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -411,10 +553,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = sownata/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -426,6 +570,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sownata.app/sownata";
 			};
 			name = Debug;
@@ -438,6 +583,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sownata.app/sownata";
 			};
 			name = Release;
@@ -449,6 +595,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = sownata;
 			};
 			name = Debug;
@@ -460,6 +607,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = sownata;
 			};
 			name = Release;
@@ -483,6 +631,7 @@
 				4ED98FF61CC68FE800198A8A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4ED98FF71CC68FE800198A8A /* Build configuration list for PBXNativeTarget "sownataTests" */ = {
 			isa = XCConfigurationList;
@@ -491,6 +640,7 @@
 				4ED98FF91CC68FE800198A8A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4ED98FFA1CC68FE800198A8A /* Build configuration list for PBXNativeTarget "sownataUITests" */ = {
 			isa = XCConfigurationList;
@@ -499,6 +649,7 @@
 				4ED98FFC1CC68FE800198A8A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
