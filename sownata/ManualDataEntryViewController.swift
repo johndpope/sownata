@@ -78,7 +78,7 @@ class ManualDataEntryViewController: UIViewController {
     fileprivate func getVerbs() -> [String] {
         
         // List should be ordered with the most likely to be selected first...
-        let verbs = ["Ran","Swam","Cycled","Slept","Waited","Worked","Wacthed TV","Weighed","Induldged"]
+        let verbs = ["Ran","Swam","Cycle","Slept","Waited","Worked","Wacthed TV","Weighed","Induldged"]
         return verbs
     
     }
