@@ -31,6 +31,24 @@ class sownataUITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let app = XCUIApplication()
+        app.buttons["Go"].tap()
+        
+        let elementsQuery = app.scrollViews.otherElements
+        elementsQuery.buttons["Ran"].tap()
+        elementsQuery.buttons["Swam"].tap()
+        XCUIDevice.shared().orientation = .landscapeRight
+        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.tap()
+
+        // let barElement = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element
+        
+        
+        // TODO:  Check something in the UI
+        // XCTAssertEqual(barElement.label, "abc", barElement.label)
+
+        
+        
     }
     
 }
