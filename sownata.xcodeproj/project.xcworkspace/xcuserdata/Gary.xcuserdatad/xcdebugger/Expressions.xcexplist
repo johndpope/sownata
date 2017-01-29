@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "sownataUITests.testExample() -&gt; ():sownataUITests.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "app.children(matching: .window).element(boundBy: 0)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
