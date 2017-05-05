@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Attribute" representedClassName=".Attribute" syncable="YES" codeGenerationType="category">
+        <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="events" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="attributes" inverseEntity="Event" syncable="YES"/>
+        <relationship name="property" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="attributes" inverseEntity="Property" syncable="YES"/>
+    </entity>
+    <entity name="Event" representedClassName=".Event" syncable="YES" codeGenerationType="category">
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attribute" inverseName="events" inverseEntity="Attribute" syncable="YES"/>
+        <relationship name="primaryNoun" maxCount="1" deletionRule="Nullify" destinationEntity="Noun" inverseName="primaryEvents" inverseEntity="Noun" syncable="YES"/>
+        <relationship name="secondaryNoun" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Noun" inverseName="secondaryEvents" inverseEntity="Noun" syncable="YES"/>
+        <relationship name="values" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Value" inverseName="events" inverseEntity="Value" syncable="YES"/>
+        <relationship name="verb" maxCount="1" deletionRule="Nullify" destinationEntity="Verb" inverseName="events" inverseEntity="Verb" syncable="YES"/>
+    </entity>
+    <entity name="Measure" representedClassName=".Measure" syncable="YES" codeGenerationType="category">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="values" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Value" inverseName="measure" inverseEntity="Value" syncable="YES"/>
+        <relationship name="verbs" toMany="YES" deletionRule="Nullify" destinationEntity="Verb" inverseName="measures" inverseEntity="Verb" syncable="YES"/>
+    </entity>
+    <entity name="Noun" representedClassName=".Noun" syncable="YES" codeGenerationType="category">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="primaryEvents" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="Event" inverseName="primaryNoun" inverseEntity="Event" syncable="YES"/>
+        <relationship name="secondaryEvents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="secondaryNoun" inverseEntity="Event" syncable="YES"/>
+    </entity>
+    <entity name="Property" representedClassName=".Property" syncable="YES" codeGenerationType="category">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attribute" inverseName="property" inverseEntity="Attribute" syncable="YES"/>
+        <relationship name="verbs" toMany="YES" deletionRule="Nullify" destinationEntity="Verb" inverseName="properties" inverseEntity="Verb" syncable="YES"/>
+    </entity>
+    <entity name="Value" representedClassName=".Value" syncable="YES" codeGenerationType="category">
+        <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="events" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="values" inverseEntity="Event" syncable="YES"/>
+        <relationship name="measure" maxCount="1" deletionRule="Nullify" destinationEntity="Measure" inverseName="values" inverseEntity="Measure" syncable="YES"/>
+    </entity>
+    <entity name="Verb" representedClassName=".Verb" syncable="YES" codeGenerationType="category">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="Event" inverseName="verb" inverseEntity="Event" syncable="YES"/>
+        <relationship name="measures" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Measure" inverseName="verbs" inverseEntity="Measure" syncable="YES"/>
+        <relationship name="properties" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Property" inverseName="verbs" inverseEntity="Property" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Attribute" positionX="198" positionY="-225" width="128" height="88"/>
+        <element name="Event" positionX="-9" positionY="-252" width="128" height="133"/>
+        <element name="Measure" positionX="18" positionY="99" width="128" height="103"/>
+        <element name="Noun" positionX="-236" positionY="-252" width="128" height="103"/>
+        <element name="Property" positionX="178" positionY="176" width="128" height="103"/>
+        <element name="Value" positionX="-2" positionY="-45" width="128" height="88"/>
+        <element name="Verb" positionX="-200" positionY="117" width="128" height="118"/>
+    </elements>
+</model>

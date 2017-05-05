@@ -12,31 +12,34 @@ class LogEntry {
     
     static let EmptyDescription: String = "..."
     
-    var category: String = "Test"
+    var time: String?
+    var noun: String?
     var verb: String?
-    var noun: String = "I"
-    var time: Date = Date()
-    var data: [String] = []
 
     var description: String {
         get {
-            if verb != nil {
-                
-                let formatter = DateFormatter()
-                formatter.dateStyle = DateFormatter.Style.short
-                formatter.timeStyle = .short
-                let dateString = formatter.string(from: time)
-                
-                return "On \(dateString) \r\n \(noun) \(verb!) \r\n \(data)"
-            } else {
+            if validate() {
+                return "\(time!) \(noun!) \(verb!)"
+            }
+            else {
                 return LogEntry.EmptyDescription
             }
         }
     }
     
+    func validate() -> Bool {
+        
+        print(time != nil)
+        print(noun != nil)
+        print(verb != nil)
+        
+        return time != nil && noun != nil && verb != nil
+    }
+    
     func clear() {
+        time = nil
+        noun = nil
         verb = nil
-        data = []
     }
     
 }
