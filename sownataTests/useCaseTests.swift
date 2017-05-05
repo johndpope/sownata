@@ -59,6 +59,7 @@ class useCaseTests: XCTestCase {
         _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
         _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
         _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+        XCTAssert(eventsModel.events?.count == 4)
 
         print(eventsModel.events!)
     }
