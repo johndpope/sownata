@@ -79,6 +79,40 @@ class EventsModel {
         return nouns
     }
 
+    //# MARK: - Measure
+
+    public func createMeasure(id: String, name: String, verb: Verb) -> Measure {
+        // TODO:  Check if the Measure already exists
+        let measure = Measure(context: managedContext!)
+        measure.id = id
+        measure.name = name
+        measure.mutableSetValue(forKey: "verbs").add(verb)
+       
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createMeasure id=\(id) name=\(name)")
+        }
+        return measure
+    }
+    
+    //# MARK: - Value
+    
+    public func createValue(valueValue: Decimal, measure: Measure) -> Value {
+        let value = Value(context: managedContext!)
+        value.value = valueValue as NSDecimalNumber
+        value.measure = measure
+        
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createValue value=\(value)")
+        }
+        return value
+    }
+    
     //# MARK: - Event
 
     public func createEvent(noun: Noun, verb: Verb) -> Event {
@@ -106,6 +140,36 @@ class EventsModel {
         }
         catch {
             fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) secondaryNoun=\(String(describing: secondaryNoun.name))")
+        }
+        return event
+    }
+
+    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, secondaryNoun: Noun) -> Event {
+        let event = Event(context: managedContext!)
+        event.time = when as NSDate
+        event.primaryNoun = primaryNoun
+        event.verb = verb
+        event.secondaryNoun = secondaryNoun
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createEvent when=\(String(describing: when.description)) primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) secondaryNoun=\(String(describing: secondaryNoun.name))")
+        }
+        return event
+    }
+
+    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, value: Value) -> Event {
+        let event = Event(context: managedContext!)
+        event.time = when as NSDate
+        event.primaryNoun = primaryNoun
+        event.verb = verb
+        event.mutableSetValue(forKey: "values").add(value)
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) value=\(String(describing: value.value))")
         }
         return event
     }

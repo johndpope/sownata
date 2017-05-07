@@ -45,9 +45,47 @@ class useCaseTests: XCTestCase {
         _ = eventsModel.createNoun(id: "horse", name:"Horse")
     }
     
-    
-    func testEvents() {
+
+    func testWeighInEvents() {
         let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
+
+        let horseNoun = eventsModel.findNoun(id: "horse")
+        
+        let weighVerb = eventsModel.createVerb(id: "weigh", name:"weighed")
+
+        let kgMeasure = eventsModel.createMeasure(id: "kg", name: "kg", verb: weighVerb)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        let firstDateString = "01-01-2017 10:00"
+        let firstWeight = eventsModel.createValue(valueValue: 95.0, measure: kgMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: firstWeight)
+    
+        let secondDateString = "01-02-2017 10:00"
+        let secondWeight = eventsModel.createValue(valueValue: 93.0, measure: kgMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: secondWeight)
+
+        let thirdDateString = "01-03-2017 10:00"
+        let thirdWeight = eventsModel.createValue(valueValue: 92.0, measure: kgMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: thirdWeight)
+
+        let fourthDateString = "15-03-2017 10:00"
+        let fourthWeight = eventsModel.createValue(valueValue: 93.0, measure: kgMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: fourthDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: fourthWeight)
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
+        
+        print(eventsModel.events!)
+
+    }
+    
+    func testToiletCleaningEvents() {
+        let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
         
         let horseNoun = eventsModel.findNoun(id: "horse")
         
@@ -55,13 +93,21 @@ class useCaseTests: XCTestCase {
         let toiletNoun = eventsModel.createNoun(id: "toilet", name:"the Toilet")
         
         _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-        XCTAssert(eventsModel.events?.count == 1)
-        _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-        _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-        _ = eventsModel.createEvent(primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-        XCTAssert(eventsModel.events?.count == 4)
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 1)
 
-        print(eventsModel.events!)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+
+        let firstDateString = "01-01-2017 10:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+
+        let secondDateString = "01-02-2017 10:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+
+        let thirdDateString = "01-03-2017 10:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
     }
     
 }
