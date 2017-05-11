@@ -36,8 +36,9 @@ class sownataUITests: XCTestCase {
         app.buttons["Go"].tap()
         
         let elementsQuery = app.scrollViews.otherElements
-        elementsQuery.buttons["Ran"].tap()
-        elementsQuery.buttons["Swam"].tap()
+        elementsQuery.buttons["Today"].tap()
+        elementsQuery.buttons["I"].tap()
+        elementsQuery.buttons["Cycled"].tap()
         XCUIDevice.shared().orientation = .landscapeRight
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.tap()
 

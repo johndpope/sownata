@@ -174,6 +174,23 @@ class EventsModel {
         return event
     }
 
+    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, values: [Value]) -> Event {
+        let event = Event(context: managedContext!)
+        event.time = when as NSDate
+        event.primaryNoun = primaryNoun
+        event.verb = verb
+        for value in values {
+            event.mutableSetValue(forKey: "values").add(value)
+        }
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) values=\(String(describing: values))")
+        }
+        return event
+    }
+
     //# TODO: - ?
     var events: [Event]? {
         let request: NSFetchRequest<Event> = Event.fetchRequest()

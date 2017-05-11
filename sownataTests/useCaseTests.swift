@@ -78,8 +78,7 @@ class useCaseTests: XCTestCase {
         
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
         
-        print(eventsModel.events!)
-
+        // TODO:  Make an assertion about my average weight each month...
     }
     
     func testToiletCleaningEvents() {
@@ -108,6 +107,53 @@ class useCaseTests: XCTestCase {
         _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
         
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
+        
+        // TODO:  Make an assertion about the number of times Horse cleaned the Toilet...
     }
+    
+    func testRunningEvents() {
+        let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
+        
+        let horseNoun = eventsModel.findNoun(id: "horse")
+        
+        let runningVerb = eventsModel.createVerb(id: "run", name:"ran")
+        
+        let kmMeasure = eventsModel.createMeasure(id: "km", name: "km", verb: runningVerb)
+        let minutesMeasure = eventsModel.createMeasure(id: "minutes", name: "minutes", verb: runningVerb)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        let firstDateString = "01-01-2017 10:00"
+        let firstDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
+        let firstDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [firstDistance, firstDuration])
+        
+        let secondDateString = "01-02-2017 10:00"
+        let secondDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
+        let secondDistance = eventsModel.createValue(valueValue: 32, measure: minutesMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [secondDistance, secondDuration])
+        
+        let thirdDateString = "01-03-2017 10:00"
+        let thirdDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
+        let thirdDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [thirdDistance, thirdDuration])
+        
+        let fourthDateString = "15-03-2017 10:00"
+        let fourthDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
+        let fourthDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: fourthDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [fourthDistance, fourthDuration])
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
+        
+        // TODO:  Make some assertions about total distance run each month...
+
+        // TODO:  Improve how objects are printed...
+        print(eventsModel.events!)
+        
+    }
+
     
 }
