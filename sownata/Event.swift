@@ -9,5 +9,11 @@
 import CoreData
 
 class Event: NSManagedObject {
-    
+
+    override var description: String {
+        
+        return "\(String(describing: self.primaryNoun!.name!)) \(String(describing: self.verb!.name!))"
+    }
+
 }
+

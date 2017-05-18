@@ -112,7 +112,42 @@ class EventsModel {
         }
         return value
     }
+
+    //# MARK: - Property
     
+    public func createProperty(id: String, name: String, verb: Verb) -> Property {
+        // TODO:  Check if the Property already exists
+        let property = Property(context: managedContext!)
+        property.id = id
+        property.name = name
+        property.mutableSetValue(forKey: "verbs").add(verb)
+        
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createProperty id=\(id) name=\(name)")
+        }
+        return property
+    }
+
+
+    //# MARK: - Attribute
+    
+    public func createAttribute(attributeValue: String, property: Property) -> Attribute {
+        let attribute = Attribute(context: managedContext!)
+        attribute.attribute = attributeValue
+        attribute.property = property
+        
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createAttribute attribute=\(attributeValue)")
+        }
+        return attribute
+    }
+
     //# MARK: - Event
 
     public func createEvent(noun: Noun, verb: Verb) -> Event {
@@ -191,6 +226,27 @@ class EventsModel {
         return event
     }
 
+    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, values: [Value], attributes: [Attribute]) -> Event {
+        let event = Event(context: managedContext!)
+        event.time = when as NSDate
+        event.primaryNoun = primaryNoun
+        event.verb = verb
+        for value in values {
+            event.mutableSetValue(forKey: "values").add(value)
+        }
+        for attribute in attributes {
+            event.mutableSetValue(forKey: "attributes").add(attribute)
+        }
+        do {
+            try managedContext!.save()
+        }
+        catch {
+            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) values=\(String(describing: values)) attributes=\(String(describing: attributes))")
+        }
+        return event
+    }
+    
+    
     //# TODO: - ?
     var events: [Event]? {
         let request: NSFetchRequest<Event> = Event.fetchRequest()

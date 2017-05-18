@@ -156,4 +156,192 @@ class useCaseTests: XCTestCase {
     }
 
     
+    func testSownataEvents() {
+        let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
+        
+        let horseNoun = eventsModel.findNoun(id: "horse")
+        
+        let workVerb = eventsModel.createVerb(id: "work", name:"work")
+        
+        let hoursMeasure = eventsModel.createMeasure(id: "hours", name: "hours", verb: workVerb)
+        
+        let workTypeProperty = eventsModel.createProperty(id: "type", name: "type", verb: workVerb)
+        
+        let codingAttribute = eventsModel.createAttribute(attributeValue: "coding", property: workTypeProperty)
+        let learningAttribute = eventsModel.createAttribute(attributeValue: "learning", property: workTypeProperty)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        // TODO:  Implement Support for Attributes
+        
+        // Development (GitHub Commits)
+
+        var dateString = ""
+        
+        // ?
+        dateString = "18-05-2017 00:00"
+        var duration = eventsModel.createValue(valueValue: 2, measure: hoursMeasure)
+
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+        
+        // Everything below this comment was recorded "after the event"...
+        
+        // ae61654
+        dateString = "11-05-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+  
+        // 066b68c
+        dateString = "07-05-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+        
+        // 3c306fd, e18cef7, 86c3d20
+        dateString = "05-05-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+
+        // 82f3281, 181dae8, ee8a71d
+        dateString = "29-01-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+
+        // 4c20d64, 691ea5c
+        dateString = "18-12-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+
+        // 3b99715, 9c0bfaf
+        dateString = "19-04-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [codingAttribute])
+
+        // Learning (iTunes University)
+        
+        // https://developer.apple.com/videos/play/wwdc2015/406/
+        dateString = "15-03-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 1. Logistics, iOS 8 Overview
+        dateString = "19-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+
+        // iOS8 2. More Xcode and Swift, MVC
+        dateString = "19-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 3. Applying MVC
+        dateString = "20-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 4. More Swift and Foundation Frameworks
+        dateString = "20-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 5. Objective-C Compatibility, Property List, Views
+        dateString = "21-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 6. Protocols and Delegation, Gestures
+        dateString = "22-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 7. Multiple MVCs
+        dateString = "23-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 8. View Controller Lifecycle, Autolayout
+        dateString = "25-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 9. Scroll View and Multithreading
+        dateString = "26-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 10. Table View
+        dateString = "28-04-2016 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 11. Unwind Segues, Alerts, Timers, View Animation
+        dateString = "26-01-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 12. Dynamic Animation
+        dateString = "26-01-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 13. Application Lifecycle and Core Motion
+        dateString = "05-02-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 14. Core Location and Map Kit
+        dateString = "08-02-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 15. Modal Segues
+        dateString = "14-02-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 16. Camera, Persistence and Embed Segues
+        dateString = "23-02-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS8 17. Internationalisation and Settings
+        dateString = "24-02-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        
+        // iOS9 ?. Core Data
+        dateString = "01-03-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS9 ?. Core Data Demo
+        dateString = "01-03-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        
+        // iOS10 ?. Core Data
+        dateString = "01-04-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+        // iOS10 ?. Core Data Demo
+        dateString = "01-04-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration], attributes: [learningAttribute])
+        
+ 
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 29)
+        
+        // TODO:  Start recording this in the actual application...
+        
+        
+    }
+
+    
+    
 }
