@@ -129,7 +129,41 @@ class useCaseTests: XCTestCase {
         print("testWeighInEvents() -> \(eventsModel.events!)")
     }
     
-    // TODO:  Implement testIndulgedEvents()
+    func testIndulgedEvents() {
+        let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
+        
+        let horseNoun = eventsModel.findNoun(id: "horse")
+        
+        let indulgedVerb = eventsModel.createVerb(id: "indulged", name:"indulged")
+        
+        let indulgenceTypeProperty = eventsModel.createProperty(id: "type", name: "type", verb: indulgedVerb)
+        
+        let cakeAttribute = eventsModel.createAttribute(attributeValue: "cake", property: indulgenceTypeProperty)
+        let fizzyPopAttribute = eventsModel.createAttribute(attributeValue: "fizzy pop", property: indulgenceTypeProperty)
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        let firstDateString = "01-01-2017 00:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [cakeAttribute])
+        
+        let secondDateString = "01-02-2017 10:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [fizzyPopAttribute])
+        
+        let thirdDateString = "01-03-2017 10:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [fizzyPopAttribute])
+        
+        let fourthDateString = "01-04-2017 10:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: fourthDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [cakeAttribute])
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
+        
+        // TODO:  Assert about the number of indulgences (by indulgence) last month
+        
+        print("testIndulgedEvents() -> \(eventsModel.events!)")
+    }
     
     func testToiletCleaningEvents() {
         let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
@@ -189,6 +223,11 @@ class useCaseTests: XCTestCase {
 
         var dateString = ""
         var duration: Value? = nil
+
+        // ?
+        dateString = "31-05-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
 
         // ?
         dateString = "25-05-2017 00:00"
@@ -348,7 +387,7 @@ class useCaseTests: XCTestCase {
         _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
         
         
-        XCTAssert(eventsModel.events?.count == startingEventCount! + 30)
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 31)
         
         // TODO:  Make an assertion about the hours worked in a given month
 
@@ -356,9 +395,109 @@ class useCaseTests: XCTestCase {
 
     }
 
-    // TODO:  Implement testNetflixEvents()
+    func testNetflixEvents() {
+        
+        let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
+        
+        let horseNoun = eventsModel.findNoun(id: "horse")
+        
+        let netflixVerb = eventsModel.createVerb(id: "netflix", name:"netflix")
+        
+        // TODO:  This should add the (already existing) Measure to the Verb
+        let hoursMeasure = eventsModel.createMeasure(id: "hours", name: "hours", verb: netflixVerb)
+        
+        let neflixTypeProperty = eventsModel.createProperty(id: "type", name: "type", verb: netflixVerb)
+        let nameProperty = eventsModel.createProperty(id: "name", name: "name", verb: netflixVerb)
 
-    // TODO:  Implement testFacebookEvents()
+        
+        let tvAttribute = eventsModel.createAttribute(attributeValue: "coding", property: neflixTypeProperty)
+        let movieAttribute = eventsModel.createAttribute(attributeValue: "learning", property: neflixTypeProperty)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        var dateString = ""
+        
+        dateString = "01-05-2017 00:00"
+        let oneHourDuration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
+        let doctorWhoAttribute = eventsModel.createAttribute(attributeValue: "doctor who", property: nameProperty)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [oneHourDuration], attributes: [tvAttribute, doctorWhoAttribute])
+
+        dateString = "02-05-2017 00:00"
+        let twoHourDuration = eventsModel.createValue(valueValue: 2, measure: hoursMeasure)
+        let despicableMeAttribute = eventsModel.createAttribute(attributeValue: "despicable me", property: nameProperty)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [twoHourDuration], attributes: [movieAttribute, despicableMeAttribute])
+
+        dateString = "03-05-2017 00:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [oneHourDuration], attributes: [tvAttribute, doctorWhoAttribute])
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [oneHourDuration], attributes: [tvAttribute, doctorWhoAttribute])
+
+        dateString = "04-05-2017 00:00"
+        let forrestGumpAttribute = eventsModel.createAttribute(attributeValue: "forest gump", property: nameProperty)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [twoHourDuration], attributes: [movieAttribute, forrestGumpAttribute])
+
+
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 5)
+        
+        // TODO:  Make an assertion about how much time was spent watching netflix
+        // TODO:  Make an assertion about whether more time was spent watching TV or Movies
+        
+        print("testNetflixEvents() -> \(eventsModel.events!)")
+        
+    }
+    
+
+    func testFacebookEvents() {
+        
+        let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
+        
+        let startingEventCount = eventsModel.events?.count
+        
+        let horseNoun = eventsModel.findNoun(id: "horse")
+        
+        let facebookVerb = eventsModel.createVerb(id: "facebook", name:"facebook")
+        
+        let actionProperty = eventsModel.createProperty(id: "action", name: "action", verb: facebookVerb)
+        let userProperty = eventsModel.createProperty(id: "user", name: "user", verb: facebookVerb)
+        
+        let reneeAttribute = eventsModel.createAttribute(attributeValue: "renee", property: userProperty)
+        let pingiAttribute = eventsModel.createAttribute(attributeValue: "pingi", property: userProperty)
+
+        let likeAttribute = eventsModel.createAttribute(attributeValue: "like", property: actionProperty)
+        let shareAttribute = eventsModel.createAttribute(attributeValue: "share", property: actionProperty)
+        let postAttribute = eventsModel.createAttribute(attributeValue: "post", property: actionProperty)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
+        
+        var dateString = ""
+        
+        dateString = "01-05-2017 00:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [likeAttribute, pingiAttribute])
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [likeAttribute, pingiAttribute])
+        
+        dateString = "02-05-2017 00:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [postAttribute])
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [likeAttribute, pingiAttribute])
+        
+        dateString = "03-05-2017 00:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [postAttribute])
+        
+        dateString = "04-05-2017 00:00"
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [shareAttribute, reneeAttribute])
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [postAttribute])
+        
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 7)
+        
+        // TODO:  Make an assertion about how much I like vs. post vs. share
+        // TODO:  Make an assertion about the number of actions last month
+        
+        print("testFacebookEvents() -> \(eventsModel.events!)")
+        
+    }
 
     
 }
