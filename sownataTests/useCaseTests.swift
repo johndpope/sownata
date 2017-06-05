@@ -21,7 +21,7 @@ class useCaseTests: XCTestCase {
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "EventsModel")
         let description = NSPersistentStoreDescription()
-        description.type = NSInMemoryStoreType
+        description.type = NSSQLiteStoreType
         container.persistentStoreDescriptions = [description]
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -33,11 +33,17 @@ class useCaseTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
+        print("tearDown() running")
+        // TODO:  Ensure that the Store is cleaned up
         managedObjectContext = nil
     }
     
     override func setUp() {
         super.setUp()
+        
+        let applicationDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String
+        print("setUp() running in '\(applicationDirectory)'")
+        
         // Set the NSManagedObjectContext with the view Context
         managedObjectContext = self.persistentContainer.viewContext
         
@@ -85,11 +91,26 @@ class useCaseTests: XCTestCase {
         
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
         
-        // TODO:  Assert about the number of runs in a given month
+        let swimmingVerb = eventsModel.createVerb(id: "swim", name:"swam")
+
+        let swimDateString = "07-03-2017 10:00"
+        let swimDuration = eventsModel.createValue(valueValue: 1.0, measure: kmMeasure)
+        let swimDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: swimDateString)!, primaryNoun: horseNoun, verb: swimmingVerb, values: [swimDistance, swimDuration])
+
+        let runningEvents = eventsModel.getEventsForVerb(verb: runningVerb)
+
+        XCTAssert(runningEvents?.count == 4)
+        
+        let runningEventsByMonth = eventsModel.getEventCountByMonthForVerb(verb: runningVerb)
+        XCTAssert(runningEventsByMonth["Mar.2017"] == 2, "\(runningEventsByMonth["Mar.2017"]!) != 2")
+        XCTAssert(runningEventsByMonth["Feb.2017"] == 1)
+        
         // TODO:  Assert about the total distance run in the last 12 months
         
-        print("testRunningEvents() -> \(eventsModel.events!)")
+//        let something = eventsModel.getMeasureSumByMonthForVerb(verb: runningVerb, measure: kmMeasure)
         
+        print("testRunningEvents() -> \(eventsModel.events!)")        
     }
 
     func testWeighInEvents() {
@@ -223,6 +244,11 @@ class useCaseTests: XCTestCase {
 
         var dateString = ""
         var duration: Value? = nil
+
+        // ?
+        dateString = "05-06-2017 00:00"
+        duration = eventsModel.createValue(valueValue: 4, measure: hoursMeasure)
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
 
         // ?
         dateString = "31-05-2017 00:00"
@@ -387,7 +413,7 @@ class useCaseTests: XCTestCase {
         _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
         
         
-        XCTAssert(eventsModel.events?.count == startingEventCount! + 31)
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 32)
         
         // TODO:  Make an assertion about the hours worked in a given month
 

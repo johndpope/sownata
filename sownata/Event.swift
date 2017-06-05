@@ -12,7 +12,7 @@ class Event: NSManagedObject {
 
     override var description: String {
         
-        var eventDescription = "On \(String(describing: self.time!)) \(String(describing: self.primaryNoun!.name!)) \(String(describing: self.verb!.name!))"
+        var eventDescription = "On \(String(describing: self.month!)) \(String(describing: self.primaryNoun!.name!)) \(String(describing: self.verb!.name!))"
         
         if (self.secondaryNoun != nil) {
             eventDescription = "\(eventDescription) \(self.secondaryNoun!.name!)"
@@ -33,6 +33,18 @@ class Event: NSManagedObject {
         }
 
         return eventDescription
+    }
+    
+    public func setTime(time: NSDate) {
+        self.time = time
+        
+        let monthFormatter = DateFormatter()
+        monthFormatter.dateFormat = "MMM.yyyy"
+        self.month = monthFormatter.string(from: time as Date)
+
+        let yearFormatter = DateFormatter()
+        yearFormatter.dateFormat = "yyyy"
+        self.year = yearFormatter.string(from: time as Date)
     }
 
 }

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Attribute" representedClassName=".Attribute" syncable="YES" codeGenerationType="category">
         <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="events" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="attributes" inverseEntity="Event" syncable="YES"/>
         <relationship name="property" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="attributes" inverseEntity="Property" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName=".Event" syncable="YES" codeGenerationType="category">
-        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="month" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="year" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attribute" inverseName="events" inverseEntity="Attribute" syncable="YES"/>
         <relationship name="primaryNoun" maxCount="1" deletionRule="Nullify" destinationEntity="Noun" inverseName="primaryEvents" inverseEntity="Noun" syncable="YES"/>
         <relationship name="secondaryNoun" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Noun" inverseName="secondaryEvents" inverseEntity="Noun" syncable="YES"/>
@@ -45,7 +47,7 @@
     </entity>
     <elements>
         <element name="Attribute" positionX="198" positionY="-225" width="128" height="88"/>
-        <element name="Event" positionX="-9" positionY="-252" width="128" height="133"/>
+        <element name="Event" positionX="-9" positionY="-252" width="128" height="163"/>
         <element name="Measure" positionX="18" positionY="99" width="128" height="103"/>
         <element name="Noun" positionX="-236" positionY="-252" width="128" height="103"/>
         <element name="Property" positionX="178" positionY="176" width="128" height="103"/>

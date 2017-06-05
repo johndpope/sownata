@@ -148,11 +148,11 @@ class EventsModel {
         return attribute
     }
 
-    //# MARK: - Event
+    //# MARK: - Event (In)
 
     public func createEvent(noun: Noun, verb: Verb) -> Event {
         let event = Event(context: managedContext!)
-        event.time = NSDate()
+        event.setTime(time: NSDate())
         event.primaryNoun = noun
         event.verb = verb
         do {
@@ -166,7 +166,7 @@ class EventsModel {
 
     public func createEvent(primaryNoun: Noun, verb: Verb, secondaryNoun: Noun) -> Event {
         let event = Event(context: managedContext!)
-        event.time = NSDate()
+        event.setTime(time: NSDate())
         event.primaryNoun = primaryNoun
         event.verb = verb
         event.secondaryNoun = secondaryNoun
@@ -181,7 +181,7 @@ class EventsModel {
 
     public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, secondaryNoun: Noun) -> Event {
         let event = Event(context: managedContext!)
-        event.time = when as NSDate
+        event.setTime(time: when as NSDate)
         event.primaryNoun = primaryNoun
         event.verb = verb
         event.secondaryNoun = secondaryNoun
@@ -196,7 +196,7 @@ class EventsModel {
 
     public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, value: Value) -> Event {
         let event = Event(context: managedContext!)
-        event.time = when as NSDate
+        event.setTime(time: when as NSDate)
         event.primaryNoun = primaryNoun
         event.verb = verb
         event.mutableSetValue(forKey: "values").add(value)
@@ -211,7 +211,7 @@ class EventsModel {
 
     public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, values: [Value]) -> Event {
         let event = Event(context: managedContext!)
-        event.time = when as NSDate
+        event.setTime(time: when as NSDate)
         event.primaryNoun = primaryNoun
         event.verb = verb
         for value in values {
@@ -228,7 +228,7 @@ class EventsModel {
 
     public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, values: [Value], attributes: [Attribute]) -> Event {
         let event = Event(context: managedContext!)
-        event.time = when as NSDate
+        event.setTime(time: when as NSDate)
         event.primaryNoun = primaryNoun
         event.verb = verb
         for value in values {
@@ -246,7 +246,84 @@ class EventsModel {
         return event
     }
     
+    //# MARK: - Events (Out)
     
+    public func getEventsForVerb(verb: Verb) -> Set<Event>? {
+        return verb.events as? Set<Event>
+    }
+
+    public func getEventCountByMonthForVerb(verb: Verb) -> [String:Int] {
+        
+        var eventCounts:[String:Int] = [:]
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Event")
+
+        let predicate = NSPredicate(format: "verb == %@", verb)
+        request.predicate = predicate
+        
+        let monthExpression = NSExpression(forKeyPath: "month")
+        let countExpressionDecsription = NSExpressionDescription()
+        countExpressionDecsription.expression = NSExpression(forFunction: "count:", arguments: [monthExpression])
+        countExpressionDecsription.name = "rowCount"
+        countExpressionDecsription.expressionResultType = .integer32AttributeType
+        
+        request.propertiesToFetch = ["month", countExpressionDecsription]
+        request.propertiesToGroupBy = ["month"]
+        
+        request.resultType = .dictionaryResultType
+        
+        let sort = NSSortDescriptor(key: "month", ascending: false)
+        request.sortDescriptors = [sort]
+        
+        let rawResults = try? managedContext!.fetch(request) as NSArray?
+        
+        if let results = rawResults! as? [[String:AnyObject]] {
+            for result in results {
+                let month = result["month"] as? String
+                let rowCount = result["rowCount"] as? Int
+                eventCounts[month!] = rowCount
+            }
+        }
+        
+        return eventCounts
+    }
+
+//    public func getMeasureSumByMonthForVerb(verb: Verb, measure: Measure) -> [String:Double] {
+//        
+//        var eventCounts:[String:Double] = [:]
+//        
+//        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Value")
+//        
+//        let predicate = NSPredicate(format: "measure = %@", measure)
+//        request.predicate = predicate
+//        
+//        let sumExpression = NSExpression(forKeyPath: "value")
+//        let countExpressionDecsription = NSExpressionDescription()
+//        countExpressionDecsription.expression = NSExpression(forFunction: "sum:", arguments: [sumExpression])
+//        countExpressionDecsription.name = "valueSum"
+//        countExpressionDecsription.expressionResultType = .integer32AttributeType
+//        
+//        request.propertiesToFetch = ["events.month", countExpressionDecsription]
+//        request.propertiesToGroupBy = ["events.month"]
+//        
+//        request.resultType = .dictionaryResultType
+//        
+//        let sort = NSSortDescriptor(key: "month", ascending: false)
+//        request.sortDescriptors = [sort]
+//        
+//        let rawResults = try? managedContext!.fetch(request) as NSArray?
+//        
+//        if let results = rawResults! as? [[String:AnyObject]] {
+//            for result in results {
+//                let month = result["month"] as? String
+//                let valueSum = result["valueSum"] as? Double
+//                eventCounts[month!] = valueSum
+//            }
+//        }
+//        
+//        return eventCounts
+//    }
+
     //# TODO: - ?
     var events: [Event]? {
         let request: NSFetchRequest<Event> = Event.fetchRequest()
