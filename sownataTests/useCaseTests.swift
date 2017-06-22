@@ -18,6 +18,8 @@ class useCaseTests: XCTestCase {
     // Create a local NSManagedObjectContext
     var managedObjectContext: NSManagedObjectContext? = nil
     
+    //# TODO: - Put all of my literals into a Struct
+    
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "EventsModel")
         let description = NSPersistentStoreDescription()
@@ -34,7 +36,7 @@ class useCaseTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         print("tearDown() running")
-        // TODO:  Ensure that the Store is cleaned up
+        //# TODO: - Ensure that the Store is cleaned up
         managedObjectContext = nil
     }
     
@@ -46,7 +48,8 @@ class useCaseTests: XCTestCase {
         
         // Set the NSManagedObjectContext with the view Context
         managedObjectContext = self.persistentContainer.viewContext
-        
+
+        //# TODO: - This is called for each test (which probably isn't what I want)
         let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
         _ = eventsModel.createNoun(id: "horse", name:"Horse")
         _ = eventsModel.createNoun(id: "pingi", name:"Pingi")
@@ -69,34 +72,29 @@ class useCaseTests: XCTestCase {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
-        let firstDateString = "01-01-2017 10:00"
-        let firstDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
-        let firstDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [firstDistance, firstDuration])
+        var testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-01-2017 10:00")!, primaryNoun: horseNoun, verb: runningVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 5.0, measure: kmMeasure)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 30, measure: minutesMeasure)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-02-2017 10:00")!, primaryNoun: horseNoun, verb: runningVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 5.0, measure: kmMeasure)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 32, measure: minutesMeasure)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-03-2017 10:00")!, primaryNoun: horseNoun, verb: runningVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 5.0, measure: kmMeasure)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 30, measure: minutesMeasure)
         
-        let secondDateString = "01-02-2017 10:00"
-        let secondDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
-        let secondDistance = eventsModel.createValue(valueValue: 32, measure: minutesMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [secondDistance, secondDuration])
-        
-        let thirdDateString = "01-03-2017 10:00"
-        let thirdDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
-        let thirdDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [thirdDistance, thirdDuration])
-        
-        let fourthDateString = "15-03-2017 10:00"
-        let fourthDuration = eventsModel.createValue(valueValue: 5.0, measure: kmMeasure)
-        let fourthDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: fourthDateString)!, primaryNoun: horseNoun, verb: runningVerb, values: [fourthDistance, fourthDuration])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "15-03-2017 10:00")!, primaryNoun: horseNoun, verb: runningVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 5.0, measure: kmMeasure)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 30, measure: minutesMeasure)
         
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
         
         let swimmingVerb = eventsModel.createVerb(id: "swim", name:"swam")
 
-        let swimDateString = "07-03-2017 10:00"
-        let swimDuration = eventsModel.createValue(valueValue: 1.0, measure: kmMeasure)
-        let swimDistance = eventsModel.createValue(valueValue: 30, measure: minutesMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: swimDateString)!, primaryNoun: horseNoun, verb: swimmingVerb, values: [swimDistance, swimDuration])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "07-03-2017 10:00")!, primaryNoun: horseNoun, verb: swimmingVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1.0, measure: kmMeasure)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 30, measure: minutesMeasure)
 
         let runningEvents = eventsModel.getEventsForVerb(verb: runningVerb)
 
@@ -108,9 +106,12 @@ class useCaseTests: XCTestCase {
         
         // TODO:  Assert about the total distance run in the last 12 months
         
-//        let something = eventsModel.getMeasureSumByMonthForVerb(verb: runningVerb, measure: kmMeasure)
+        let runningDistanceByMonth = eventsModel.getMeasureSumByMonthForVerb(verb: runningVerb, measure: kmMeasure)
         
-        print("testRunningEvents() -> \(eventsModel.events!)")        
+        XCTAssert(runningDistanceByMonth["Jan.2017"] == 5, "\(runningDistanceByMonth["Jan.2017"]!) != 5")
+        XCTAssert(runningDistanceByMonth["Mar.2017"] == 10, "\(runningDistanceByMonth["Mar.2017"]!) != 10")
+
+        print("testRunningEvents() -> \(eventsModel.events!)")
     }
 
     func testWeighInEvents() {
@@ -127,21 +128,17 @@ class useCaseTests: XCTestCase {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
-        let firstDateString = "01-01-2017 10:00"
-        let firstWeight = eventsModel.createValue(valueValue: 95.0, measure: kgMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: firstWeight)
+        var testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-01-2017 10:00")!, primaryNoun: horseNoun, verb: weighVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 95.0, measure: kgMeasure)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-02-2017 10:00")!, primaryNoun: horseNoun, verb: weighVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 93.0, measure: kgMeasure)
     
-        let secondDateString = "01-02-2017 10:00"
-        let secondWeight = eventsModel.createValue(valueValue: 93.0, measure: kgMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: secondWeight)
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-03-2017 10:00")!, primaryNoun: horseNoun, verb: weighVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 92.0, measure: kgMeasure)
 
-        let thirdDateString = "01-03-2017 10:00"
-        let thirdWeight = eventsModel.createValue(valueValue: 92.0, measure: kgMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: thirdWeight)
-
-        let fourthDateString = "15-03-2017 10:00"
-        let fourthWeight = eventsModel.createValue(valueValue: 93.0, measure: kgMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: fourthDateString)!, primaryNoun: horseNoun, verb: weighVerb, value: fourthWeight)
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "15-03-2017 10:00")!, primaryNoun: horseNoun, verb: weighVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 93.0, measure: kgMeasure)
         
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
         
@@ -161,25 +158,25 @@ class useCaseTests: XCTestCase {
         
         let indulgenceTypeProperty = eventsModel.createProperty(id: "type", name: "type", verb: indulgedVerb)
         
-        let cakeAttribute = eventsModel.createAttribute(attributeValue: "cake", property: indulgenceTypeProperty)
-        let fizzyPopAttribute = eventsModel.createAttribute(attributeValue: "fizzy pop", property: indulgenceTypeProperty)
-
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
-        let firstDateString = "01-01-2017 00:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [cakeAttribute])
+        var testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-01-2017 00:00")!, primaryNoun: horseNoun, verb: indulgedVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "cake", property: indulgenceTypeProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-02-2017 10:00")!, primaryNoun: horseNoun, verb: indulgedVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "fizzy pop", property: indulgenceTypeProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-02-2017 10:00")!, primaryNoun: horseNoun, verb: indulgedVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "fizzy pop", property: indulgenceTypeProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-03-2017 10:00")!, primaryNoun: horseNoun, verb: indulgedVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "fizzy pop", property: indulgenceTypeProperty)
         
-        let secondDateString = "01-02-2017 10:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [fizzyPopAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-04-2017 10:00")!, primaryNoun: horseNoun, verb: indulgedVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "cake", property: indulgenceTypeProperty)
         
-        let thirdDateString = "01-03-2017 10:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [fizzyPopAttribute])
-        
-        let fourthDateString = "01-04-2017 10:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: fourthDateString)!, primaryNoun: horseNoun, verb: indulgedVerb, values: [], attributes: [cakeAttribute])
-        
-        XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 5)
         
         // TODO:  Assert about the number of indulgences (by indulgence) last month
         
@@ -196,22 +193,20 @@ class useCaseTests: XCTestCase {
         
         let cleanVerb = eventsModel.createVerb(id: "clean", name:"cleaned")
         let toiletNoun = eventsModel.createNoun(id: "toilet", name:"the Toilet")
-        
-        _ = eventsModel.createEvent(primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-        XCTAssert(eventsModel.events?.count == startingEventCount! + 1)
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
-
-        let firstDateString = "01-01-2017 10:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: firstDateString)!, primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-
-        let secondDateString = "01-02-2017 10:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: secondDateString)!, primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
-
-        let thirdDateString = "01-03-2017 10:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: thirdDateString)!, primaryNoun: reneeNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
         
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: "01-01-2017 10:00")!, primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+        
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 1)
+
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: "01-02-2017 10:00")!, primaryNoun: reneeNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: "01-03-2017 10:00")!, primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+
+        _ = eventsModel.createEvent(when: dateFormatter.date(from: "01-04-2017 10:00")!, primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
+
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
         
         // TODO:  Make an assertion about who cleans the toilet more often
@@ -234,186 +229,182 @@ class useCaseTests: XCTestCase {
         
         let workTypeProperty = eventsModel.createProperty(id: "type", name: "type", verb: workVerb)
         
-        let codingAttribute = eventsModel.createAttribute(attributeValue: "coding", property: workTypeProperty)
-        let learningAttribute = eventsModel.createAttribute(attributeValue: "learning", property: workTypeProperty)
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
         // Development (GitHub Commits)
 
-        var dateString = ""
-        var duration: Value? = nil
-
         // ?
-        dateString = "05-06-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 4, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        var testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "22-06-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
 
-        // ?
-        dateString = "31-05-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "08-06-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 2, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
 
-        // ?
-        dateString = "25-05-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 2, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
-
-        // ?
-        dateString = "18-05-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 2, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
-
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "05-06-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 6, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
         
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "31-05-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "25-05-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 2, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "18-05-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 2, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
+
         // Everything below this comment was recorded "after the event"...
         
         // ae61654
-        dateString = "11-05-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "11-05-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
   
         // 066b68c
-        dateString = "07-05-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "07-05-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
         
         // 3c306fd, e18cef7, 86c3d20
-        dateString = "05-05-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "05-05-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
 
         // 82f3281, 181dae8, ee8a71d
-        dateString = "29-01-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "29-01-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
 
         // 4c20d64, 691ea5c
-        dateString = "18-12-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "18-12-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
 
         // 3b99715, 9c0bfaf
-        dateString = "19-04-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [codingAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "19-04-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "coding", property: workTypeProperty)
 
         // Learning (iTunes University)
         
         // https://developer.apple.com/videos/play/wwdc2015/406/
-        dateString = "15-03-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "15-03-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 1. Logistics, iOS 8 Overview
-        dateString = "19-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "19-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
 
         // iOS8 2. More Xcode and Swift, MVC
-        dateString = "19-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "19-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 3. Applying MVC
-        dateString = "20-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "20-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 4. More Swift and Foundation Frameworks
-        dateString = "20-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "20-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 5. Objective-C Compatibility, Property List, Views
-        dateString = "21-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "21-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 6. Protocols and Delegation, Gestures
-        dateString = "22-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "22-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 7. Multiple MVCs
-        dateString = "23-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "23-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 8. View Controller Lifecycle, Autolayout
-        dateString = "25-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "25-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 9. Scroll View and Multithreading
-        dateString = "26-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "26-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 10. Table View
-        dateString = "28-04-2016 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "28-04-2016 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 11. Unwind Segues, Alerts, Timers, View Animation
-        dateString = "26-01-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "26-01-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 12. Dynamic Animation
-        dateString = "26-01-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "26-01-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 13. Application Lifecycle and Core Motion
-        dateString = "05-02-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "05-02-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 14. Core Location and Map Kit
-        dateString = "08-02-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "08-02-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 15. Modal Segues
-        dateString = "14-02-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
-        
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "14-02-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
+
         // iOS8 16. Camera, Persistence and Embed Segues
-        dateString = "23-02-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "23-02-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS8 17. Internationalisation and Settings
-        dateString = "24-02-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
-        
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "24-02-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
+
         
         // iOS9 ?. Core Data
-        dateString = "01-03-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-03-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS9 ?. Core Data Demo
-        dateString = "01-03-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
-        
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-03-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS10 ?. Core Data
-        dateString = "01-04-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-04-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
         
         // iOS10 ?. Core Data Demo
-        dateString = "01-04-2017 00:00"
-        duration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: workVerb, values: [duration!], attributes: [learningAttribute])
-        
-        
-        XCTAssert(eventsModel.events?.count == startingEventCount! + 32)
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-04-2017 00:00")!, primaryNoun: horseNoun, verb: workVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "learning", property: workTypeProperty)
+
+        XCTAssert(eventsModel.events?.count == startingEventCount! + 34)
         
         // TODO:  Make an assertion about the hours worked in a given month
 
@@ -437,32 +428,34 @@ class useCaseTests: XCTestCase {
         let neflixTypeProperty = eventsModel.createProperty(id: "type", name: "type", verb: netflixVerb)
         let nameProperty = eventsModel.createProperty(id: "name", name: "name", verb: netflixVerb)
 
-        
-        let tvAttribute = eventsModel.createAttribute(attributeValue: "coding", property: neflixTypeProperty)
-        let movieAttribute = eventsModel.createAttribute(attributeValue: "learning", property: neflixTypeProperty)
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
-        var dateString = ""
+        // ?
+        var testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-05-2017 00:00")!, primaryNoun: horseNoun, verb: netflixVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "doctor who", property: nameProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "tv", property: neflixTypeProperty)
         
-        dateString = "01-05-2017 00:00"
-        let oneHourDuration = eventsModel.createValue(valueValue: 1, measure: hoursMeasure)
-        let doctorWhoAttribute = eventsModel.createAttribute(attributeValue: "doctor who", property: nameProperty)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [oneHourDuration], attributes: [tvAttribute, doctorWhoAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "02-05-2017 00:00")!, primaryNoun: horseNoun, verb: netflixVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 2, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "despicable me", property: nameProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "film", property: neflixTypeProperty)
 
-        dateString = "02-05-2017 00:00"
-        let twoHourDuration = eventsModel.createValue(valueValue: 2, measure: hoursMeasure)
-        let despicableMeAttribute = eventsModel.createAttribute(attributeValue: "despicable me", property: nameProperty)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [twoHourDuration], attributes: [movieAttribute, despicableMeAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "03-05-2017 00:00")!, primaryNoun: horseNoun, verb: netflixVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "doctor who", property: nameProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "tv", property: neflixTypeProperty)
 
-        dateString = "03-05-2017 00:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [oneHourDuration], attributes: [tvAttribute, doctorWhoAttribute])
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [oneHourDuration], attributes: [tvAttribute, doctorWhoAttribute])
-
-        dateString = "04-05-2017 00:00"
-        let forrestGumpAttribute = eventsModel.createAttribute(attributeValue: "forest gump", property: nameProperty)
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: netflixVerb, values: [twoHourDuration], attributes: [movieAttribute, forrestGumpAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "03-05-2017 00:00")!, primaryNoun: horseNoun, verb: netflixVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 1, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "doctor who", property: nameProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "tv", property: neflixTypeProperty)
+        
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "04-05-2017 00:00")!, primaryNoun: horseNoun, verb: netflixVerb)
+        _ = eventsModel.addValue(event: testEvent, valueValue: 2, measure: hoursMeasure)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "forest gump", property: nameProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "film", property: neflixTypeProperty)
 
 
         XCTAssert(eventsModel.events?.count == startingEventCount! + 5)
@@ -488,33 +481,35 @@ class useCaseTests: XCTestCase {
         let actionProperty = eventsModel.createProperty(id: "action", name: "action", verb: facebookVerb)
         let userProperty = eventsModel.createProperty(id: "user", name: "user", verb: facebookVerb)
         
-        let reneeAttribute = eventsModel.createAttribute(attributeValue: "renee", property: userProperty)
-        let pingiAttribute = eventsModel.createAttribute(attributeValue: "pingi", property: userProperty)
-
-        let likeAttribute = eventsModel.createAttribute(attributeValue: "like", property: actionProperty)
-        let shareAttribute = eventsModel.createAttribute(attributeValue: "share", property: actionProperty)
-        let postAttribute = eventsModel.createAttribute(attributeValue: "post", property: actionProperty)
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy HH:mm"
         
-        var dateString = ""
+        // ?
+        var testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "01-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "like", property: actionProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "pingi", property: userProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "02-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "like", property: actionProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "renee", property: userProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "02-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "like", property: actionProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "pingi", property: userProperty)
         
-        dateString = "01-05-2017 00:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [likeAttribute, pingiAttribute])
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [likeAttribute, pingiAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "03-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "post", property: actionProperty)
         
-        dateString = "02-05-2017 00:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [postAttribute])
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [likeAttribute, pingiAttribute])
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "04-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "post", property: actionProperty)
+
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "04-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "share", property: actionProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "renee", property: userProperty)
         
-        dateString = "03-05-2017 00:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [postAttribute])
-        
-        dateString = "04-05-2017 00:00"
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [shareAttribute, reneeAttribute])
-        _ = eventsModel.createEvent(when: dateFormatter.date(from: dateString)!, primaryNoun: horseNoun, verb: facebookVerb, values: [], attributes: [postAttribute])
-        
+        testEvent = eventsModel.createEvent(when: dateFormatter.date(from: "05-05-2017 00:00")!, primaryNoun: horseNoun, verb: facebookVerb)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "like", property: actionProperty)
+        _ = eventsModel.addAttribute(event: testEvent, attributeValue: "pingi", property: userProperty)
         
         XCTAssert(eventsModel.events?.count == startingEventCount! + 7)
         

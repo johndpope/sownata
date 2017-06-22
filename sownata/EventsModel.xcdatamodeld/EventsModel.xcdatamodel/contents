@@ -2,17 +2,17 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Attribute" representedClassName=".Attribute" syncable="YES" codeGenerationType="category">
         <attribute name="attribute" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="events" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="attributes" inverseEntity="Event" syncable="YES"/>
+        <relationship name="event" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="attributes" inverseEntity="Event" syncable="YES"/>
         <relationship name="property" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="attributes" inverseEntity="Property" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName=".Event" syncable="YES" codeGenerationType="category">
         <attribute name="month" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="time" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="year" attributeType="String" indexed="YES" syncable="YES"/>
-        <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attribute" inverseName="events" inverseEntity="Attribute" syncable="YES"/>
+        <relationship name="attributes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attribute" inverseName="event" inverseEntity="Attribute" syncable="YES"/>
         <relationship name="primaryNoun" maxCount="1" deletionRule="Nullify" destinationEntity="Noun" inverseName="primaryEvents" inverseEntity="Noun" syncable="YES"/>
         <relationship name="secondaryNoun" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Noun" inverseName="secondaryEvents" inverseEntity="Noun" syncable="YES"/>
-        <relationship name="values" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Value" inverseName="events" inverseEntity="Value" syncable="YES"/>
+        <relationship name="values" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Value" inverseName="event" inverseEntity="Value" syncable="YES"/>
         <relationship name="verb" maxCount="1" deletionRule="Nullify" destinationEntity="Verb" inverseName="events" inverseEntity="Verb" syncable="YES"/>
     </entity>
     <entity name="Measure" representedClassName=".Measure" syncable="YES" codeGenerationType="category">
@@ -35,7 +35,7 @@
     </entity>
     <entity name="Value" representedClassName=".Value" syncable="YES" codeGenerationType="category">
         <attribute name="value" optional="YES" attributeType="Decimal" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="events" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="values" inverseEntity="Event" syncable="YES"/>
+        <relationship name="event" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="values" inverseEntity="Event" syncable="YES"/>
         <relationship name="measure" maxCount="1" deletionRule="Nullify" destinationEntity="Measure" inverseName="values" inverseEntity="Measure" syncable="YES"/>
     </entity>
     <entity name="Verb" representedClassName=".Verb" syncable="YES" codeGenerationType="category">

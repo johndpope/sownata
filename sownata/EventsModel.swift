@@ -69,7 +69,7 @@ class EventsModel {
         request.predicate = NSPredicate(format: "id == %@", id)
         let nouns = try? managedContext!.fetch(request)
         
-        // TODO: Handle Missing Noun
+        //# TODO: - Handle Missing Noun
         return nouns![0]
     }
     
@@ -82,7 +82,7 @@ class EventsModel {
     //# MARK: - Measure
 
     public func createMeasure(id: String, name: String, verb: Verb) -> Measure {
-        // TODO:  Check if the Measure already exists
+        //# TODO: - Check if the Measure already exists
         let measure = Measure(context: managedContext!)
         measure.id = id
         measure.name = name
@@ -92,23 +92,25 @@ class EventsModel {
             try managedContext!.save()
         }
         catch {
-            fatalError("Unresolved error in createMeasure id=\(id) name=\(name)")
+            fatalError("Unresolved error in createMeasure id=\(id) name=\(name) verb=\(verb.name as Optional)")
         }
         return measure
     }
     
     //# MARK: - Value
     
-    public func createValue(valueValue: Decimal, measure: Measure) -> Value {
+    //# TODO: - Should this be part of the Event Class?
+    public func addValue(event: Event, valueValue: Decimal, measure: Measure) -> Value {
         let value = Value(context: managedContext!)
         value.value = valueValue as NSDecimalNumber
         value.measure = measure
+        value.event = event
         
         do {
             try managedContext!.save()
         }
         catch {
-            fatalError("Unresolved error in createValue value=\(value)")
+            fatalError("Unresolved error in addValue value=\(valueValue) measure=\(measure.name as Optional)")
         }
         return value
     }
@@ -134,114 +136,51 @@ class EventsModel {
 
     //# MARK: - Attribute
     
-    public func createAttribute(attributeValue: String, property: Property) -> Attribute {
+    //# TODO: - Should this be part of the Event Class?
+    public func addAttribute(event: Event, attributeValue: String, property: Property) -> Attribute {
         let attribute = Attribute(context: managedContext!)
         attribute.attribute = attributeValue
         attribute.property = property
+        attribute.event = event
         
         do {
             try managedContext!.save()
         }
         catch {
-            fatalError("Unresolved error in createAttribute attribute=\(attributeValue)")
+            fatalError("Unresolved error in addAttribute attribute=\(attributeValue) property=\(property.name as Optional)")
         }
         return attribute
     }
 
     //# MARK: - Event (In)
 
-    public func createEvent(noun: Noun, verb: Verb) -> Event {
-        let event = Event(context: managedContext!)
-        event.setTime(time: NSDate())
-        event.primaryNoun = noun
-        event.verb = verb
-        do {
-            try managedContext!.save()
-        }
-        catch {
-            fatalError("Unresolved error in createEvent noun=\(String(describing: noun.name)) verb=\(String(describing: verb.name))")
-        }
-        return event
+    public func createEvent(primaryNoun: Noun, verb: Verb) -> Event {
+        return createEvent(when: NSDate() as Date, primaryNoun: primaryNoun, verb: verb, secondaryNoun: nil)
     }
 
-    public func createEvent(primaryNoun: Noun, verb: Verb, secondaryNoun: Noun) -> Event {
-        let event = Event(context: managedContext!)
-        event.setTime(time: NSDate())
-        event.primaryNoun = primaryNoun
-        event.verb = verb
-        event.secondaryNoun = secondaryNoun
-        do {
-            try managedContext!.save()
+    public func createEvent(when: Date?, primaryNoun: Noun, verb: Verb) -> Event {
+        if ((when) != nil) {
+            return createEvent(when: when!, primaryNoun: primaryNoun, verb: verb, secondaryNoun: nil)
         }
-        catch {
-            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) secondaryNoun=\(String(describing: secondaryNoun.name))")
+        else {
+            return createEvent(when: NSDate() as Date, primaryNoun: primaryNoun, verb: verb, secondaryNoun: nil)
         }
-        return event
     }
 
-    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, secondaryNoun: Noun) -> Event {
+    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, secondaryNoun: Noun?) -> Event {
         let event = Event(context: managedContext!)
         event.setTime(time: when as NSDate)
         event.primaryNoun = primaryNoun
         event.verb = verb
-        event.secondaryNoun = secondaryNoun
-        do {
-            try managedContext!.save()
-        }
-        catch {
-            fatalError("Unresolved error in createEvent when=\(String(describing: when.description)) primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) secondaryNoun=\(String(describing: secondaryNoun.name))")
-        }
-        return event
-    }
-
-    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, value: Value) -> Event {
-        let event = Event(context: managedContext!)
-        event.setTime(time: when as NSDate)
-        event.primaryNoun = primaryNoun
-        event.verb = verb
-        event.mutableSetValue(forKey: "values").add(value)
-        do {
-            try managedContext!.save()
-        }
-        catch {
-            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) value=\(String(describing: value.value))")
-        }
-        return event
-    }
-
-    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, values: [Value]) -> Event {
-        let event = Event(context: managedContext!)
-        event.setTime(time: when as NSDate)
-        event.primaryNoun = primaryNoun
-        event.verb = verb
-        for value in values {
-            event.mutableSetValue(forKey: "values").add(value)
+        //# TODO: - Check that this is the best way to check an optional
+        if ((secondaryNoun) != nil) {
+            event.secondaryNoun = secondaryNoun!
         }
         do {
             try managedContext!.save()
         }
         catch {
-            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) values=\(String(describing: values))")
-        }
-        return event
-    }
-
-    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, values: [Value], attributes: [Attribute]) -> Event {
-        let event = Event(context: managedContext!)
-        event.setTime(time: when as NSDate)
-        event.primaryNoun = primaryNoun
-        event.verb = verb
-        for value in values {
-            event.mutableSetValue(forKey: "values").add(value)
-        }
-        for attribute in attributes {
-            event.mutableSetValue(forKey: "attributes").add(attribute)
-        }
-        do {
-            try managedContext!.save()
-        }
-        catch {
-            fatalError("Unresolved error in createEvent primaryNoun=\(String(describing: primaryNoun.name)) verb=\(String(describing: verb.name)) values=\(String(describing: values)) attributes=\(String(describing: attributes))")
+            fatalError("Unresolved error in createEvent noun=\(primaryNoun.name as Optional) verb=\(verb.name as Optional)")
         }
         return event
     }
@@ -288,41 +227,41 @@ class EventsModel {
         return eventCounts
     }
 
-//    public func getMeasureSumByMonthForVerb(verb: Verb, measure: Measure) -> [String:Double] {
-//        
-//        var eventCounts:[String:Double] = [:]
-//        
-//        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Value")
-//        
-//        let predicate = NSPredicate(format: "measure = %@", measure)
-//        request.predicate = predicate
-//        
-//        let sumExpression = NSExpression(forKeyPath: "value")
-//        let countExpressionDecsription = NSExpressionDescription()
-//        countExpressionDecsription.expression = NSExpression(forFunction: "sum:", arguments: [sumExpression])
-//        countExpressionDecsription.name = "valueSum"
-//        countExpressionDecsription.expressionResultType = .integer32AttributeType
-//        
-//        request.propertiesToFetch = ["events.month", countExpressionDecsription]
-//        request.propertiesToGroupBy = ["events.month"]
-//        
-//        request.resultType = .dictionaryResultType
-//        
-//        let sort = NSSortDescriptor(key: "month", ascending: false)
-//        request.sortDescriptors = [sort]
-//        
-//        let rawResults = try? managedContext!.fetch(request) as NSArray?
-//        
-//        if let results = rawResults! as? [[String:AnyObject]] {
-//            for result in results {
-//                let month = result["month"] as? String
-//                let valueSum = result["valueSum"] as? Double
-//                eventCounts[month!] = valueSum
-//            }
-//        }
-//        
-//        return eventCounts
-//    }
+    public func getMeasureSumByMonthForVerb(verb: Verb, measure: Measure) -> [String:Double] {
+        
+        var eventCounts:[String:Double] = [:]
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Value")
+        
+        let predicate = NSPredicate(format: "measure = %@ AND event.verb = %@", measure, verb)
+        request.predicate = predicate
+        
+        let sumExpression = NSExpression(forKeyPath: "value")
+        let countExpressionDecsription = NSExpressionDescription()
+        countExpressionDecsription.expression = NSExpression(forFunction: "sum:", arguments: [sumExpression])
+        countExpressionDecsription.name = "valueSum"
+        countExpressionDecsription.expressionResultType = .integer32AttributeType
+        
+        request.propertiesToFetch = ["event.month", countExpressionDecsription]
+        request.propertiesToGroupBy = ["event.month"]
+        
+        request.resultType = .dictionaryResultType
+        
+        let sort = NSSortDescriptor(key: "event.month", ascending: false)
+        request.sortDescriptors = [sort]
+        
+        let rawResults = try? managedContext!.fetch(request) as NSArray?
+        
+        if let results = rawResults! as? [[String:AnyObject]] {
+            for result in results {
+                let month = result["event.month"] as? String
+                let valueSum = result["valueSum"] as? Double
+                eventCounts[month!] = valueSum
+            }
+        }
+        
+        return eventCounts
+    }
 
     //# TODO: - ?
     var events: [Event]? {

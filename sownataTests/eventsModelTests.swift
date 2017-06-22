@@ -83,7 +83,7 @@ class eventsModelTests: XCTestCase {
         let swimVerb = eventsModel.createVerb(id: "swim", name:"swam")
         let reneeNoun = eventsModel.createNoun(id: "renee", name:"Renee")
         
-        _ = eventsModel.createEvent(noun: reneeNoun, verb: swimVerb)
+        _ = eventsModel.createEvent(primaryNoun: reneeNoun, verb: swimVerb)
         XCTAssert(eventsModel.events?.count == 1)
     }
     
