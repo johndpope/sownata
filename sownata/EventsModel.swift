@@ -227,7 +227,13 @@ class EventsModel {
         return eventCounts
     }
 
-    public func getMeasureSumByMonthForVerb(verb: Verb, measure: Measure) -> [String:Double] {
+    enum AggregateFunction: String {
+        case Sum = "sum:"
+        case Average = "average:"
+        case Count = "count:"
+    }
+    
+    public func getMeasureAggregateByMonthForVerb(verb: Verb, measure: Measure, aggregateFunction: AggregateFunction) -> [String:Double] {
         
         var eventCounts:[String:Double] = [:]
         
@@ -236,10 +242,10 @@ class EventsModel {
         let predicate = NSPredicate(format: "measure = %@ AND event.verb = %@", measure, verb)
         request.predicate = predicate
         
-        let sumExpression = NSExpression(forKeyPath: "value")
+        let aggregateExpression = NSExpression(forKeyPath: "value")
         let countExpressionDecsription = NSExpressionDescription()
-        countExpressionDecsription.expression = NSExpression(forFunction: "sum:", arguments: [sumExpression])
-        countExpressionDecsription.name = "valueSum"
+        countExpressionDecsription.expression = NSExpression(forFunction: aggregateFunction.rawValue, arguments: [aggregateExpression])
+        countExpressionDecsription.name = "aggregateValue"
         countExpressionDecsription.expressionResultType = .integer32AttributeType
         
         request.propertiesToFetch = ["event.month", countExpressionDecsription]
@@ -255,7 +261,7 @@ class EventsModel {
         if let results = rawResults! as? [[String:AnyObject]] {
             for result in results {
                 let month = result["event.month"] as? String
-                let valueSum = result["valueSum"] as? Double
+                let valueSum = result["aggregateValue"] as? Double
                 eventCounts[month!] = valueSum
             }
         }
@@ -263,6 +269,43 @@ class EventsModel {
         return eventCounts
     }
 
+    public func getPropertyCountsForVerbBetweenDates(verb: Verb, property: Property) -> [String:Double] {
+        
+        var eventCounts:[String:Double] = [:]
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Attribute")
+        
+        let predicate = NSPredicate(format: "property = %@ AND event.verb = %@", property, verb)
+        request.predicate = predicate
+        
+        let aggregateExpression = NSExpression(forKeyPath: "attribute")
+        let countExpressionDecsription = NSExpressionDescription()
+        countExpressionDecsription.expression = NSExpression(forFunction: AggregateFunction.Count.rawValue, arguments: [aggregateExpression])
+        countExpressionDecsription.name = "aggregateValue"
+        countExpressionDecsription.expressionResultType = .integer32AttributeType
+        
+        request.propertiesToFetch = ["attribute", countExpressionDecsription]
+        request.propertiesToGroupBy = ["attribute"]
+        
+        request.resultType = .dictionaryResultType
+        
+        let sort = NSSortDescriptor(key: "attribute", ascending: false)
+        request.sortDescriptors = [sort]
+        
+        let rawResults = try? managedContext!.fetch(request) as NSArray?
+        
+        if let results = rawResults! as? [[String:AnyObject]] {
+            for result in results {
+                let attribute = result["attribute"] as? String
+                let valueSum = result["aggregateValue"] as? Double
+                eventCounts[attribute!] = valueSum
+            }
+        }
+        
+        return eventCounts
+    }
+
+    
     //# TODO: - ?
     var events: [Event]? {
         let request: NSFetchRequest<Event> = Event.fetchRequest()
