@@ -269,6 +269,18 @@ class useCaseTests: XCTestCase {
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
         
         // TODO:  Make an assertion about who cleans the toilet more often
+        // _ = eventsModel.getNounCountsForVerbAndSecondaryNounBetweenDates(verb: cleanVerb)
+        // Can I define this interface as one method?
+        // or at least less methods e.g.
+        // getNounCounts
+        // getPropertyCounts
+        // getMonthCounts
+        // and
+        // getNounMeasureAggregate
+        // getPropertyMeasureAggregate
+        // getMonthMeasureAggregate
+        // maybe if measure is null then use count?
+
         
         print("testToiletCleaningEvents() -> \(eventsModel.events!)")
     }
