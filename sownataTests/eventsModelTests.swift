@@ -46,45 +46,52 @@ class eventsModelTests: XCTestCase {
     func testVerbs() {
         let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
 
-        XCTAssert(eventsModel.verbs?.count == 0)
+        XCTAssert(eventsModel.verbs?.count == 7, "Expected \(7) Verbs but found \(String(describing: eventsModel.verbs?.count))")
 
-        _ = eventsModel.createVerb(id: "basketball", name:"played basketball")
-        XCTAssert(eventsModel.verbs?.count == 1)
+        _ = eventsModel.createVerb(id: "swim", name: "swim")
+        XCTAssert(eventsModel.verbs?.count == 8, "Expected \(8) Verbs but found \(String(describing: eventsModel.verbs?.count))")
         
-        _ = eventsModel.createVerb(id: "badminton", name:"played badminton")
-        XCTAssert(eventsModel.verbs?.count == 2)
-        
-        _ = eventsModel.createVerb(id: "eat", name:"ate")
-        XCTAssert(eventsModel.verbs?.count == 3)
-        
-        //# TODO: - What should happen if you try and create a Verb that already exists?
+        _ = eventsModel.createVerb(id: "swim", name: "swim")
+        XCTAssert(eventsModel.verbs?.count == 8, "Expected \(8) Verbs but found \(String(describing: eventsModel.verbs?.count))")
     }
 
     func testNouns() {
         let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
         
-        XCTAssert(eventsModel.nouns?.count == 0)
+        XCTAssert(eventsModel.nouns?.count == 3, "Expected \(3) Nouns but found \(String(describing: eventsModel.nouns?.count))")
         
-        _ = eventsModel.createNoun(id: "gary", name:"Gary")
-        XCTAssert(eventsModel.nouns?.count == 1)
+        _ = eventsModel.createNoun(id: "horse", name: "horse")
+        XCTAssert(eventsModel.nouns?.count == 4, "Expected \(4) Nouns but found \(String(describing: eventsModel.nouns?.count))")
         
-        _ = eventsModel.createNoun(id: "horse", name:"Horse")
-        XCTAssert(eventsModel.nouns?.count == 2)
+        _ = eventsModel.createNoun(id: "horse", name: "horse")
+        XCTAssert(eventsModel.nouns?.count == 4, "Expected \(4) Nouns but found \(String(describing: eventsModel.nouns?.count))")
         
-        _ = eventsModel.createNoun(id: "pingi", name:"Pingi")
-        XCTAssert(eventsModel.nouns?.count == 3)
-        
-        //# TODO: - What should happen if you try and create a Noun that already exists?
+        XCTAssert(eventsModel.pronouns?.count == 1, "Expected \(1) Pronouns but found \(String(describing: eventsModel.pronouns?.count))")
     }
     
     func testEvents() {
         let eventsModel = EventsModel(managedContext: self.managedObjectContext!)
         
-        let swimVerb = eventsModel.createVerb(id: "swim", name:"swam")
-        let reneeNoun = eventsModel.createNoun(id: "renee", name:"Renee")
+        let meNoun = eventsModel.findNoun(id: "me")
+        let indulgeVerb = eventsModel.findVerb(id: "indulge")
+        let cakeNoun = eventsModel.findNoun(id: "cake")
         
-        _ = eventsModel.createEvent(primaryNoun: reneeNoun, verb: swimVerb)
+        _ = eventsModel.createEvent(when: Date(), primaryNoun: meNoun!, verb: indulgeVerb!, secondaryNoun: cakeNoun!)
         XCTAssert(eventsModel.events?.count == 1)
+        
+        let watchVerb = eventsModel.findVerb(id: "watch")
+        let sourceProperty = eventsModel.findProperty(id: "source")
+        let typeProperty = eventsModel.findProperty(id: "type")
+        let hoursMeasure = eventsModel.findMeasure(id: "hours")
+
+        let watchEvent = eventsModel.createEvent(when: Date(), primaryNoun: meNoun!, verb: watchVerb!)
+        XCTAssert(eventsModel.events?.count == 2)
+        
+        _ = eventsModel.addAttribute(event: watchEvent, attributeValue: "Netflix", property: sourceProperty!)
+        _ = eventsModel.addAttribute(event: watchEvent, attributeValue: "Film", property: typeProperty!)
+        _ = eventsModel.addValue(event: watchEvent, valueValue: 2.0, measure: hoursMeasure!)
+
+        // TODO:  Add XCTAssert(s) for Attributes and Value
     }
     
 }

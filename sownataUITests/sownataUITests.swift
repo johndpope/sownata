@@ -39,7 +39,7 @@ class sownataUITests: XCTestCase {
         elementsQuery.buttons["Today"].tap()
         elementsQuery.buttons["I"].tap()
         elementsQuery.buttons["Cycled"].tap()
-        XCUIDevice.shared().orientation = .landscapeRight
+        XCUIDevice.shared.orientation = .landscapeRight
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.tap()
 
         // let barElement = app.children(matching: .window).element(boundBy: 0).children(matching: .other).element

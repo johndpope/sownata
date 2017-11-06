@@ -19,8 +19,6 @@
 		4ED98FDA1CC68FE700198A8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4ED98FD81CC68FE700198A8A /* LaunchScreen.storyboard */; };
 		4ED98FE51CC68FE800198A8A /* eventsModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED98FE41CC68FE800198A8A /* eventsModelTests.swift */; };
 		4ED98FF01CC68FE800198A8A /* sownataUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED98FEF1CC68FE800198A8A /* sownataUITests.swift */; };
-		C42E09E71EBCBB5E007E6758 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; };
-		C42E09E81EBCBB5E007E6758 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C42E09EE1EBCC963007E6758 /* useCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42E09ED1EBCC963007E6758 /* useCaseTests.swift */; };
 		C44F54341E8428CC00837F4F /* EventsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C44F54321E8428CC00837F4F /* EventsModel.xcdatamodeld */; };
 		C44F54381E8430FB00837F4F /* Verb.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54371E8430FB00837F4F /* Verb.swift */; };
@@ -31,6 +29,9 @@
 		C44F54431E8431A300837F4F /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54421E8431A300837F4F /* Measure.swift */; };
 		C44F54451E8431AD00837F4F /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54441E8431AD00837F4F /* Property.swift */; };
 		C4703CC11E85319B00EBAB76 /* EventsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4703CC01E85319B00EBAB76 /* EventsModel.swift */; };
+		C47FD4B21FAE089200EF9EE4 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; };
+		C47FD4B31FAE089200EF9EE4 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C4C63AF51FAF833E002ED68B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C63AF41FAF833E002ED68B /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,23 +63,23 @@
 			remoteGlobalIDString = 06165F2E1D8110E600722320;
 			remoteInfo = ChartsTests;
 		};
-		C42E09E91EBCBB5E007E6758 /* PBXContainerItemProxy */ = {
+		C47FD4B41FAE089200EF9EE4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C42E09D81EBCBA12007E6758 /* Charts.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 06165F231D8110E600722320;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
 			remoteInfo = Charts;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4E2FC6471CCBC7E2000F1464 /* Embed Frameworks */ = {
+		C47FD4B61FAE089200EF9EE4 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C42E09E81EBCBB5E007E6758 /* Charts.framework in Embed Frameworks */,
+				C47FD4B31FAE089200EF9EE4 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +116,7 @@
 		C44F54421E8431A300837F4F /* Measure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		C44F54441E8431AD00837F4F /* Property.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		C4703CC01E85319B00EBAB76 /* EventsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventsModel.swift; sourceTree = "<group>"; };
+		C4C63AF41FAF833E002ED68B /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C42E09E71EBCBB5E007E6758 /* Charts.framework in Frameworks */,
+				C47FD4B21FAE089200EF9EE4 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +178,7 @@
 				4EA1936E1CCD073300F212A4 /* InputViewController.swift */,
 				4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */,
 				4EA1936A1CCD050C00F212A4 /* LaunchViewController.swift */,
+				C4C63AF41FAF833E002ED68B /* Logger.swift */,
 			);
 			path = sownata;
 			sourceTree = "<group>";
@@ -245,12 +248,12 @@
 				4ED98FC81CC68FE700198A8A /* Sources */,
 				4ED98FC91CC68FE700198A8A /* Frameworks */,
 				4ED98FCA1CC68FE700198A8A /* Resources */,
-				4E2FC6471CCBC7E2000F1464 /* Embed Frameworks */,
+				C47FD4B61FAE089200EF9EE4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C42E09EA1EBCBB5E007E6758 /* PBXTargetDependency */,
+				C47FD4B51FAE089200EF9EE4 /* PBXTargetDependency */,
 			);
 			name = sownata;
 			productName = sownata;
@@ -300,23 +303,23 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0910;
 				TargetAttributes = {
 					4ED98FCB1CC68FE700198A8A = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = ARK7F8CZXC;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0910;
 					};
 					4ED98FDF1CC68FE800198A8A = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = ARK7F8CZXC;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0910;
 						TestTargetID = 4ED98FCB1CC68FE700198A8A;
 					};
 					4ED98FEA1CC68FE800198A8A = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = ARK7F8CZXC;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0910;
 						TestTargetID = 4ED98FCB1CC68FE700198A8A;
 					};
 				};
@@ -404,6 +407,7 @@
 				4EA1936F1CCD073300F212A4 /* InputViewController.swift in Sources */,
 				4E8137D11CCFC46D00F39E2A /* LogEntry.swift in Sources */,
 				C44F54381E8430FB00837F4F /* Verb.swift in Sources */,
+				C4C63AF51FAF833E002ED68B /* Logger.swift in Sources */,
 				4ED98FD21CC68FE700198A8A /* DashboardViewController.swift in Sources */,
 				C44F543F1E84317F00837F4F /* Attribute.swift in Sources */,
 				C44F543B1E84314E00837F4F /* Noun.swift in Sources */,
@@ -445,10 +449,10 @@
 			target = 4ED98FCB1CC68FE700198A8A /* sownata */;
 			targetProxy = 4ED98FEC1CC68FE800198A8A /* PBXContainerItemProxy */;
 		};
-		C42E09EA1EBCBB5E007E6758 /* PBXTargetDependency */ = {
+		C47FD4B51FAE089200EF9EE4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Charts;
-			targetProxy = C42E09E91EBCBB5E007E6758 /* PBXContainerItemProxy */;
+			targetProxy = C47FD4B41FAE089200EF9EE4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -481,14 +485,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -529,14 +539,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -573,7 +589,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -588,7 +605,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -601,7 +619,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sownata.app/sownata";
 			};
 			name = Debug;
@@ -615,7 +634,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/sownata.app/sownata";
 			};
 			name = Release;
@@ -628,7 +648,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = sownata;
 			};
 			name = Debug;
@@ -641,7 +662,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownataUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = sownata;
 			};
 			name = Release;

@@ -12,6 +12,8 @@ class InputViewController: UIViewController {
 
     var logEntry = LogEntry() // This is our Model
     
+    var eventsModel = EventsModel(managedContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
+    
     override func viewDidLoad() {
         
         logText.layer.cornerRadius = 5.0
@@ -38,11 +40,12 @@ class InputViewController: UIViewController {
             nounStackView.addArrangedSubview(nounButton)
         }
 
-        let verbs = getVerbs()
+        // let verbs = getVerbs()
+        let verbs = eventsModel.verbs!
         for verb in verbs {
             let verbButton = UIButton(type: UIButtonType.system)
             verbButton.backgroundColor = UIColor(red: 0.4, green: 1.0, blue: 0.4, alpha: 0.5)
-            verbButton.setTitle(verb, for: UIControlState())
+            verbButton.setTitle(verb.name, for: UIControlState())
             verbButton.addTarget(self, action: #selector(InputViewController.selectVerb(_:)), for: UIControlEvents.touchUpInside)
             verbStackView.addArrangedSubview(verbButton)
         }
@@ -96,6 +99,10 @@ class InputViewController: UIViewController {
         
         // TODO:  Implement Save...
         clearLog(sender)
+        
+        _ = eventsModel.createVerb(id: "test", name: "test")
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
     }
 
     @IBAction func clearLog(_ sender: UIButton) {

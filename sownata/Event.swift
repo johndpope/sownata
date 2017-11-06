@@ -35,7 +35,7 @@ class Event: NSManagedObject {
         return eventDescription
     }
     
-    public func setTime(time: NSDate) {
+    public func setTime(time: Date) {
         self.time = time
         
         let monthFormatter = DateFormatter()

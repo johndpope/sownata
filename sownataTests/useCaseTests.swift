@@ -5,7 +5,7 @@
 //  Created by Gary Joy on 19/04/2016.
 //
 //
-
+/*
 import XCTest
 
 import CoreData
@@ -156,11 +156,13 @@ class useCaseTests: XCTestCase {
 
         XCTAssert(runningEvents?.count == 4)
         
-        let runningEventsByMonth = eventsModel.getEventCountByMonthForVerb(verb: runningVerb)
+        let runningEventsByMonth = eventsModel.getChartData(dimension: EventsModel.Dimension(dimension: EventsModel.TimeGrouping.Month), verb: runningVerb)
+        
         XCTAssert(runningEventsByMonth["Mar.2017"] == 2, "\(runningEventsByMonth["Mar.2017"]!) != 2")
         XCTAssert(runningEventsByMonth["Feb.2017"] == 1)
         
         let runningDistanceByMonth = eventsModel.getMeasureAggregateByMonthForVerb(verb: runningVerb, measure: kmMeasure, aggregateFunction: EventsModel.AggregateFunction.Sum)
+//        let runningDistanceByMonth = eventsModel.getChartData(dimension: EventsModel.Dimension(dimension: EventsModel.TimeGrouping.Month), verb: runningVerb)
         
         XCTAssert(runningDistanceByMonth["Jan.2017"] == 5, "\(runningDistanceByMonth["Jan.2017"]!) != 5")
         XCTAssert(runningDistanceByMonth["Mar.2017"] == 10, "\(runningDistanceByMonth["Mar.2017"]!) != 10")
@@ -234,7 +236,7 @@ class useCaseTests: XCTestCase {
         XCTAssert(eventsModel.events?.count == startingEventCount! + 5)
         
         //# TODO: - Implement Date Filter
-        let indulgencesInJanuary = eventsModel.getPropertyCountsForVerbBetweenDates(verb: indulgedVerb, property: indulgenceTypeProperty)
+        let indulgencesInJanuary = eventsModel.getChartData(dimension: EventsModel.Dimension(dimension: indulgenceTypeProperty), verb: indulgedVerb)
         
         XCTAssert(indulgencesInJanuary[Attribute.FizzyPop] == 3, "\(indulgencesInJanuary[Attribute.FizzyPop]!) != 3")
         XCTAssert(indulgencesInJanuary[Attribute.Cake] == 2, "\(indulgencesInJanuary[Attribute.Cake]!) != 2")
@@ -267,6 +269,7 @@ class useCaseTests: XCTestCase {
         _ = eventsModel.createEvent(when: dateFormatter.date(from: "01-04-2017 10:00")!, primaryNoun: pingiNoun, verb: cleanVerb, secondaryNoun: toiletNoun)
 
         XCTAssert(eventsModel.events?.count == startingEventCount! + 4)
+        
         
         // TODO:  Make an assertion about who cleans the toilet more often
         // _ = eventsModel.getNounCountsForVerbAndSecondaryNounBetweenDates(verb: cleanVerb)
@@ -597,3 +600,4 @@ class useCaseTests: XCTestCase {
 
     
 }
+ */

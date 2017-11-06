@@ -29,9 +29,9 @@ class LogEntry {
     
     func validate() -> Bool {
         
-        print(time != nil)
-        print(noun != nil)
-        print(verb != nil)
+//        print(time != nil)
+//        print(noun != nil)
+//        print(verb != nil)
         
         return time != nil && noun != nil && verb != nil
     }

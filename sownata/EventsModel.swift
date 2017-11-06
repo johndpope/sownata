@@ -19,29 +19,92 @@ class EventsModel {
     
     var managedContext: NSManagedObjectContext? = nil
 
+    var empty: Bool {
+        if let verbCount = verbs?.count {
+            return verbCount == 0
+        }
+        else {
+            return false
+        }
+    }
+    
     init(managedContext: NSManagedObjectContext) {
         // IMPORTANT: You can only use this on the Main Queue (it is not thread-safe)
         // (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         self.managedContext = managedContext
+        
+        if empty {
+            initialiseMetadata()
+        }
+    }
+    
+    private func initialiseMetadata() {
+
+        Logger.sharedInstance.logMessage(message: "Creating Default Metadata", logLevel: .Info)
+
+        let runVerb = createVerb(id: "run", name: "run")
+        let weighVerb = createVerb(id: "weigh", name: "weigh")
+         _ = createVerb(id: "indulge", name: "indulge")
+         _ = createVerb(id: "clean", name: "clean")
+         let workVerb = createVerb(id: "work", name: "work")
+         let watchVerb = createVerb(id: "watch", name: "watch")
+         let interactVerb = createVerb(id: "interact", name: "interact")
+
+        _ = createNoun(id: "me", name: "me", pronoun: true)
+
+        _ = createNoun(id: "cake", name: "cake")
+        _ = createNoun(id: "toilet", name: "toilet")
+
+        _ = createMeasure(id: "km", name: "km", verb: runVerb)
+        _ = createMeasure(id: "minutes", name: "minutes", verb: runVerb)
+        _ = createMeasure(id: "kg", name: "kg", verb: weighVerb)
+        _ = createMeasure(id: "hours", name: "hours", verb: workVerb)
+        _ = createMeasure(id: "hours", name: "hours", verb: watchVerb) // This should add watchVerb to the existing Measure, rather than create a new Measure
+
+        _ = createProperty(id: "source", name: "source", verb: interactVerb)
+        _ = createProperty(id: "source", name: "source", verb: watchVerb) // This should add watchVerb to the existing Property, rather than create a new Property
+        _ = createProperty(id: "type", name: "soutyperce", verb: interactVerb)
+        _ = createProperty(id: "type", name: "type", verb: watchVerb) // This should add watchVerb to the existing Property, rather than create a new Property
+        _ = createProperty(id: "name", name: "name", verb: watchVerb)
+        _ = createProperty(id: "account", name: "account", verb: interactVerb)
+
     }
     
     //# MARK: - Verb
     
     public func createVerb(id: String, name: String) -> Verb {
-        // TODO:  Check if the Verb already exists
-        let verb = Verb(context: managedContext!)
-        verb.id = id
-        verb.name = name
-        do {
-            try managedContext!.save()
+        if let existingVerb = findVerb(id: id) {
+            Logger.sharedInstance.logMessage(message: "The \(id) Verb already exists", logLevel: .Warning)
+            return existingVerb
         }
-        catch {
-            fatalError("Unresolved error in createVerb id=\(id) name=\(name)")
+        else {
+            let verb = Verb(context: managedContext!)
+            verb.id = id
+            verb.name = name
+            do {
+                try managedContext!.save()
+                Logger.sharedInstance.logMessage(message: "The \(id) Verb has been created", logLevel: .Info)
+            }
+            catch {
+                fatalError("Unresolved error in createVerb id=\(id) name=\(name)")
+            }
+            return verb
         }
-        return verb
     }
     
+    public func findVerb(id:String) -> Verb? {
+        let request: NSFetchRequest<Verb> = Verb.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+        let verbs = try? managedContext!.fetch(request)
+        if verbs?.count == 0 {
+            return nil
+        }
+        else {
+            return verbs?[0]
+        }
+    }
+
     var verbs: [Verb]? {
         let request: NSFetchRequest<Verb> = Verb.fetchRequest()
         let verbs = try? managedContext!.fetch(request)
@@ -50,27 +113,37 @@ class EventsModel {
 
     //# MARK: - Noun
 
-    public func createNoun(id: String, name: String) -> Noun {
-        // TODO:  Check if the Noun already exists
-        let noun = Noun(context: managedContext!)
-        noun.id = id
-        noun.name = name
-        do {
-            try managedContext!.save()
+    public func createNoun(id: String, name: String, pronoun: Bool = false) -> Noun {
+        if let existingNoun = findNoun(id: id) {
+            Logger.sharedInstance.logMessage(message: "The \(id) Noun already exists", logLevel: .Warning)
+            return existingNoun
         }
-        catch {
-            fatalError("Unresolved error in createNoun id=\(id) name=\(name)")
+        else {
+            let noun = Noun(context: managedContext!)
+            noun.id = id
+            noun.name = name
+            noun.pronoun = pronoun
+            do {
+                try managedContext!.save()
+                Logger.sharedInstance.logMessage(message: "The \(id) Noun has been created", logLevel: .Info)
+            }
+            catch {
+                fatalError("Unresolved error in createNoun id=\(id) name=\(name)")
+            }
+            return noun
         }
-        return noun
     }
 
-    public func findNoun(id:String) -> Noun {
+    public func findNoun(id:String) -> Noun? {
         let request: NSFetchRequest<Noun> = Noun.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id)
         let nouns = try? managedContext!.fetch(request)
-        
-        //# TODO: - Handle Missing Noun
-        return nouns![0]
+        if nouns?.count == 0 {
+            return nil
+        }
+        else {
+            return nouns?[0]
+        }
     }
     
     var nouns: [Noun]? {
@@ -79,27 +152,51 @@ class EventsModel {
         return nouns
     }
 
-    //# MARK: - Measure
+    var pronouns: [Noun]? {
+        let request: NSFetchRequest<Noun> = Noun.fetchRequest()
+        request.predicate = NSPredicate(format: "pronoun == %@", NSNumber(value: true))
+        let pronouns = try? managedContext!.fetch(request)
+        return pronouns
+    }
 
+    //# MARK: - Measure
     public func createMeasure(id: String, name: String, verb: Verb) -> Measure {
-        //# TODO: - Check if the Measure already exists
-        let measure = Measure(context: managedContext!)
-        measure.id = id
-        measure.name = name
-        measure.mutableSetValue(forKey: "verbs").add(verb)
-       
-        do {
-            try managedContext!.save()
+        if let existingMeasure = findMeasure(id: id) {
+            Logger.sharedInstance.logMessage(message: "The \(id) Measure already exists", logLevel: .Warning)
+            //# TODO: - May still need to add the Verb...
+            return existingMeasure
         }
-        catch {
-            fatalError("Unresolved error in createMeasure id=\(id) name=\(name) verb=\(verb.name as Optional)")
+        else {
+            let measure = Measure(context: managedContext!)
+            measure.id = id
+            measure.name = name
+            measure.mutableSetValue(forKey: "verbs").add(verb)
+            
+            do {
+                try managedContext!.save()
+                Logger.sharedInstance.logMessage(message: "The \(id) Measure has been created", logLevel: .Info)
+            }
+            catch {
+                fatalError("Unresolved error in createMeasure id=\(id) name=\(name) verb=\(verb.name as Optional)")
+            }
+            return measure
         }
-        return measure
+    }
+    
+    public func findMeasure(id:String) -> Measure? {
+        let request: NSFetchRequest<Measure> = Measure.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+        let measures = try? managedContext!.fetch(request)
+        if measures?.count == 0 {
+            return nil
+        }
+        else {
+            return measures?[0]
+        }
     }
     
     //# MARK: - Value
     
-    //# TODO: - Should this be part of the Event Class?
     public func addValue(event: Event, valueValue: Decimal, measure: Measure) -> Value {
         let value = Value(context: managedContext!)
         value.value = valueValue as NSDecimalNumber
@@ -118,25 +215,42 @@ class EventsModel {
     //# MARK: - Property
     
     public func createProperty(id: String, name: String, verb: Verb) -> Property {
-        // TODO:  Check if the Property already exists
-        let property = Property(context: managedContext!)
-        property.id = id
-        property.name = name
-        property.mutableSetValue(forKey: "verbs").add(verb)
-        
-        do {
-            try managedContext!.save()
+        if let existingProperty = findProperty(id: id) {
+            Logger.sharedInstance.logMessage(message: "The \(id) Property already exists", logLevel: .Warning)
+            //# TODO: - May still need to add the Verb...
+            return existingProperty
         }
-        catch {
-            fatalError("Unresolved error in createProperty id=\(id) name=\(name)")
+        else {
+            let property = Property(context: managedContext!)
+            property.id = id
+            property.name = name
+            property.mutableSetValue(forKey: "verbs").add(verb)
+            
+            do {
+                try managedContext!.save()
+                Logger.sharedInstance.logMessage(message: "The \(id) Property has been created", logLevel: .Info)
+            }
+            catch {
+                fatalError("Unresolved error in createProperty id=\(id) name=\(name)")
+            }
+            return property
         }
-        return property
     }
 
+    public func findProperty(id:String) -> Property? {
+        let request: NSFetchRequest<Property> = Property.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id)
+        let properties = try? managedContext!.fetch(request)
+        if properties?.count == 0 {
+            return nil
+        }
+        else {
+            return properties?[0]
+        }
+    }
 
     //# MARK: - Attribute
     
-    //# TODO: - Should this be part of the Event Class?
     public func addAttribute(event: Event, attributeValue: String, property: Property) -> Attribute {
         let attribute = Attribute(context: managedContext!)
         attribute.attribute = attributeValue
@@ -154,26 +268,12 @@ class EventsModel {
 
     //# MARK: - Event (In)
 
-    public func createEvent(primaryNoun: Noun, verb: Verb) -> Event {
-        return createEvent(when: NSDate() as Date, primaryNoun: primaryNoun, verb: verb, secondaryNoun: nil)
-    }
-
-    public func createEvent(when: Date?, primaryNoun: Noun, verb: Verb) -> Event {
-        if ((when) != nil) {
-            return createEvent(when: when!, primaryNoun: primaryNoun, verb: verb, secondaryNoun: nil)
-        }
-        else {
-            return createEvent(when: NSDate() as Date, primaryNoun: primaryNoun, verb: verb, secondaryNoun: nil)
-        }
-    }
-
-    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, secondaryNoun: Noun?) -> Event {
+    public func createEvent(when: Date, primaryNoun: Noun, verb: Verb, secondaryNoun: Noun? = nil) -> Event {
         let event = Event(context: managedContext!)
-        event.setTime(time: when as NSDate)
+        event.setTime(time: when)
         event.primaryNoun = primaryNoun
         event.verb = verb
-        //# TODO: - Check that this is the best way to check an optional
-        if ((secondaryNoun) != nil) {
+        if secondaryNoun != nil {
             event.secondaryNoun = secondaryNoun!
         }
         do {
@@ -191,9 +291,9 @@ class EventsModel {
         return verb.events as? Set<Event>
     }
 
-    public func getEventCountByMonthForVerb(verb: Verb) -> [String:Int] {
+    public func getEventCountByMonthForVerb(verb: Verb) -> [String:Double] {
         
-        var eventCounts:[String:Int] = [:]
+        var eventCounts:[String:Double] = [:]
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Event")
 
@@ -219,7 +319,7 @@ class EventsModel {
         if let results = rawResults! as? [[String:AnyObject]] {
             for result in results {
                 let month = result["month"] as? String
-                let rowCount = result["rowCount"] as? Int
+                let rowCount = result["rowCount"] as? Double
                 eventCounts[month!] = rowCount
             }
         }
@@ -232,6 +332,31 @@ class EventsModel {
         case Average = "average:"
         case Count = "count:"
     }
+    
+    enum TimeGrouping: String {
+        case Month = "event.month"
+        case Year = "event.year"
+    }
+    
+    class Dimension : CustomStringConvertible {
+        var object: NSManagedObject?
+        var time: TimeGrouping?
+        init(dimension: NSManagedObject) {
+            object = dimension
+        }
+        init(dimension: TimeGrouping){
+            time = dimension
+        }
+        public var description: String {
+            //# TODO: - Implement Me!
+            return "?"
+        }
+    }
+    
+    // 1. push everything through getCHartDatas
+    // 2. create a common method where the entity, predicate etc are passed
+    // 3. refactor to use that method
+    // 4. smile
     
     public func getMeasureAggregateByMonthForVerb(verb: Verb, measure: Measure, aggregateFunction: AggregateFunction) -> [String:Double] {
         
@@ -269,7 +394,7 @@ class EventsModel {
         return eventCounts
     }
 
-    public func getPropertyCountsForVerbBetweenDates(verb: Verb, property: Property) -> [String:Double] {
+    private func getPropertyCountsForVerbBetweenDates(verb: Verb, property: Property) -> [String:Double] {
         
         var eventCounts:[String:Double] = [:]
         
@@ -304,6 +429,24 @@ class EventsModel {
         
         return eventCounts
     }
+
+    public func getChartData(dimension: Dimension, verb: Verb) -> [String:Double] {
+        
+        var eventCounts:[String:Double] = [:]
+
+        switch dimension {
+        case _ where dimension.object is Property:
+            eventCounts = getPropertyCountsForVerbBetweenDates(verb: verb, property: dimension.object as! Property)
+        case _ where dimension.time == TimeGrouping.Month:
+            eventCounts = getEventCountByMonthForVerb(verb: verb)
+        default:
+            print("Unsupported dimension= \(dimension)")
+        }
+        
+        return eventCounts
+    }
+
+    // TODO:  Create a getTableData() function...
 
     
     //# TODO: - ?

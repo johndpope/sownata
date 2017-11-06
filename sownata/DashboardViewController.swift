@@ -10,7 +10,6 @@ import UIKit
 
 import Charts
 
-
 class DashboardViewController: UIViewController {
 
     var months: [String]!
