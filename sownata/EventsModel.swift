@@ -45,7 +45,7 @@ class EventsModel {
 
         let runVerb = createVerb(id: "run", name: "run")
         let weighVerb = createVerb(id: "weigh", name: "weigh")
-         _ = createVerb(id: "indulge", name: "indulge")
+        let indulgeVerb = createVerb(id: "indulge", name: "indulge")
          _ = createVerb(id: "clean", name: "clean")
          let workVerb = createVerb(id: "work", name: "work")
          let watchVerb = createVerb(id: "watch", name: "watch")
@@ -64,10 +64,11 @@ class EventsModel {
 
         _ = createProperty(id: "source", name: "source", verb: interactVerb)
         _ = createProperty(id: "source", name: "source", verb: watchVerb) // This should add watchVerb to the existing Property, rather than create a new Property
-        _ = createProperty(id: "type", name: "soutyperce", verb: interactVerb)
+        _ = createProperty(id: "type", name: "type", verb: interactVerb)
         _ = createProperty(id: "type", name: "type", verb: watchVerb) // This should add watchVerb to the existing Property, rather than create a new Property
         _ = createProperty(id: "name", name: "name", verb: watchVerb)
         _ = createProperty(id: "account", name: "account", verb: interactVerb)
+        _ = createProperty(id: "type", name: "type", verb: indulgeVerb) // This should add indulgeVerb to the existing Property, rather than create a new Property
 
     }
     
@@ -291,7 +292,68 @@ class EventsModel {
         return verb.events as? Set<Event>
     }
 
-    public func getEventCountByMonthForVerb(verb: Verb) -> [String:Double] {
+    enum AggregateFunction: String {
+        case Sum = "sum:"
+        case Average = "average:"
+        case Count = "count:"
+    }
+    
+    enum TimeGrouping: String {
+        case Month = "event.month"
+        case Year = "event.year"
+    }
+   
+    class Viewpoint : CustomStringConvertible {
+
+        //# TODO: - Add support for TimeGrouping...
+
+        var dimension: NSManagedObject?
+        var time: TimeGrouping?
+        var function: AggregateFunction?
+        var verb: Verb?
+        
+        init(viewpointVerb: Verb) {
+            verb = viewpointVerb
+            time = TimeGrouping.Month
+        }
+        init(viewpointVerb: Verb, viewpointDimension: Property) {
+            verb = viewpointVerb
+            dimension = viewpointDimension
+            time = TimeGrouping.Month // This is misleading...
+        }
+        init(viewpointVerb: Verb, viewpointDimension: Measure, viewpointFunction: AggregateFunction) {
+            verb = viewpointVerb
+            dimension = viewpointDimension
+            time = TimeGrouping.Month
+            function = viewpointFunction
+        }
+        public var description: String {
+            //# TODO: - Implement Me!
+            return "?"
+        }
+    }
+    
+    public func getChartData(viewpoint: Viewpoint) -> [String:Double] {
+        
+        //# TODO: - Add support for Start and End Event Dates...
+
+        var eventCounts:[String:Double] = [:]
+        
+        switch viewpoint {
+        case _ where viewpoint.dimension is Property:
+            eventCounts = getPropertyCountsForVerb(verb: viewpoint.verb!, property: viewpoint.dimension as! Property)
+        case _ where viewpoint.dimension is Measure:
+            eventCounts = getMeasureAggregateByTimeGroupingForVerb(measure: viewpoint.dimension as! Measure, aggregateFunction: viewpoint.function!, timeGrouping: viewpoint.time!, verb: viewpoint.verb!)
+        default:
+            eventCounts = getEventCountByTimeGroupingForVerb(timeGrouping: viewpoint.time!, verb: viewpoint.verb!)
+        }
+        
+        return eventCounts
+    }
+    
+    private func getEventCountByTimeGroupingForVerb(timeGrouping: TimeGrouping, verb: Verb) -> [String:Double] {
+        
+        //# TODO: - Add support for TimeGrouping...
         
         var eventCounts:[String:Double] = [:]
         
@@ -326,40 +388,11 @@ class EventsModel {
         
         return eventCounts
     }
-
-    enum AggregateFunction: String {
-        case Sum = "sum:"
-        case Average = "average:"
-        case Count = "count:"
-    }
     
-    enum TimeGrouping: String {
-        case Month = "event.month"
-        case Year = "event.year"
-    }
-    
-    class Dimension : CustomStringConvertible {
-        var object: NSManagedObject?
-        var time: TimeGrouping?
-        init(dimension: NSManagedObject) {
-            object = dimension
-        }
-        init(dimension: TimeGrouping){
-            time = dimension
-        }
-        public var description: String {
-            //# TODO: - Implement Me!
-            return "?"
-        }
-    }
-    
-    // 1. push everything through getCHartDatas
-    // 2. create a common method where the entity, predicate etc are passed
-    // 3. refactor to use that method
-    // 4. smile
-    
-    public func getMeasureAggregateByMonthForVerb(verb: Verb, measure: Measure, aggregateFunction: AggregateFunction) -> [String:Double] {
+    private func getMeasureAggregateByTimeGroupingForVerb(measure: Measure, aggregateFunction: AggregateFunction, timeGrouping: TimeGrouping ,verb: Verb) -> [String:Double] {
         
+        //# TODO: - Add support for TimeGrouping...
+
         var eventCounts:[String:Double] = [:]
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Value")
@@ -394,7 +427,7 @@ class EventsModel {
         return eventCounts
     }
 
-    private func getPropertyCountsForVerbBetweenDates(verb: Verb, property: Property) -> [String:Double] {
+    private func getPropertyCountsForVerb(verb: Verb, property: Property) -> [String:Double] {
         
         var eventCounts:[String:Double] = [:]
         
@@ -430,24 +463,7 @@ class EventsModel {
         return eventCounts
     }
 
-    public func getChartData(dimension: Dimension, verb: Verb) -> [String:Double] {
-        
-        var eventCounts:[String:Double] = [:]
-
-        switch dimension {
-        case _ where dimension.object is Property:
-            eventCounts = getPropertyCountsForVerbBetweenDates(verb: verb, property: dimension.object as! Property)
-        case _ where dimension.time == TimeGrouping.Month:
-            eventCounts = getEventCountByMonthForVerb(verb: verb)
-        default:
-            print("Unsupported dimension= \(dimension)")
-        }
-        
-        return eventCounts
-    }
-
     // TODO:  Create a getTableData() function...
-
     
     //# TODO: - ?
     var events: [Event]? {

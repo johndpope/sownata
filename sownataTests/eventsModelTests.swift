@@ -91,7 +91,8 @@ class eventsModelTests: XCTestCase {
         _ = eventsModel.addAttribute(event: watchEvent, attributeValue: "Film", property: typeProperty!)
         _ = eventsModel.addValue(event: watchEvent, valueValue: 2.0, measure: hoursMeasure!)
 
-        // TODO:  Add XCTAssert(s) for Attributes and Value
+        XCTAssert(watchEvent.attributes!.count == 2, "Expected \(2) Attributes but found \(String(describing: watchEvent.attributes!.count))")
+        XCTAssert(watchEvent.values!.count == 1, "Expected \(1) Values but found \(String(describing: watchEvent.values!.count))")
     }
     
 }

@@ -29,9 +29,8 @@
 		C44F54431E8431A300837F4F /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54421E8431A300837F4F /* Measure.swift */; };
 		C44F54451E8431AD00837F4F /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54441E8431AD00837F4F /* Property.swift */; };
 		C4703CC11E85319B00EBAB76 /* EventsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4703CC01E85319B00EBAB76 /* EventsModel.swift */; };
-		C47FD4B21FAE089200EF9EE4 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; };
-		C47FD4B31FAE089200EF9EE4 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C4C63AF51FAF833E002ED68B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C63AF41FAF833E002ED68B /* Logger.swift */; };
+		C4F45F991FD9C07500F084C4 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,28 +62,7 @@
 			remoteGlobalIDString = 06165F2E1D8110E600722320;
 			remoteInfo = ChartsTests;
 		};
-		C47FD4B41FAE089200EF9EE4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C42E09D81EBCBA12007E6758 /* Charts.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A58A4ED274A941CA248EA921;
-			remoteInfo = Charts;
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C47FD4B61FAE089200EF9EE4 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C47FD4B31FAE089200EF9EE4 /* Charts.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4E8137D01CCFC46D00F39E2A /* LogEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
@@ -124,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C47FD4B21FAE089200EF9EE4 /* Charts.framework in Frameworks */,
+				C4F45F991FD9C07500F084C4 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +131,7 @@
 				4ED98FCE1CC68FE700198A8A /* sownata */,
 				4ED98FE31CC68FE800198A8A /* sownataTests */,
 				4ED98FEE1CC68FE800198A8A /* sownataUITests */,
+				C4F45F981FD9C07500F084C4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -238,6 +217,13 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		C4F45F981FD9C07500F084C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -248,12 +234,10 @@
 				4ED98FC81CC68FE700198A8A /* Sources */,
 				4ED98FC91CC68FE700198A8A /* Frameworks */,
 				4ED98FCA1CC68FE700198A8A /* Resources */,
-				C47FD4B61FAE089200EF9EE4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C47FD4B51FAE089200EF9EE4 /* PBXTargetDependency */,
 			);
 			name = sownata;
 			productName = sownata;
@@ -449,11 +433,6 @@
 			target = 4ED98FCB1CC68FE700198A8A /* sownata */;
 			targetProxy = 4ED98FEC1CC68FE800198A8A /* PBXContainerItemProxy */;
 		};
-		C47FD4B51FAE089200EF9EE4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Charts;
-			targetProxy = C47FD4B41FAE089200EF9EE4 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -581,7 +560,6 @@
 		4ED98FF51CC68FE800198A8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ARK7F8CZXC;
 				INFOPLIST_FILE = sownata/Info.plist;
@@ -597,7 +575,6 @@
 		4ED98FF61CC68FE800198A8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ARK7F8CZXC;
 				INFOPLIST_FILE = sownata/Info.plist;
