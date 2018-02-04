@@ -8,21 +8,21 @@
 
 import Foundation
 
-class LogEntry {
+class NewEvent {
     
     static let EmptyDescription: String = "..."
     
     var time: String?
-    var noun: String?
-    var verb: String?
+    var noun: Noun?
+    var verb: Verb?
 
     var description: String {
         get {
             if validate() {
-                return "\(time!) \(noun!) \(verb!)"
+                return "\(time!) \(noun!.name!) \(verb!.name!)"
             }
             else {
-                return LogEntry.EmptyDescription
+                return NewEvent.EmptyDescription
             }
         }
     }

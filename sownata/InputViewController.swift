@@ -10,7 +10,7 @@ import UIKit
 
 class InputViewController: UIViewController {
 
-    var logEntry = LogEntry() // This is our Model
+    var newEvent = NewEvent() // This is our Model
     
     var eventsModel = EventsModel(managedContext: (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext)
     
@@ -31,16 +31,15 @@ class InputViewController: UIViewController {
             timeStackView.addArrangedSubview(timeButton)
         }
 
-        let nouns = getNouns()
-        for noun in nouns {
+        let pronouns = eventsModel.pronouns!
+        for pronoun in pronouns {
             let nounButton = UIButton(type: UIButtonType.system)
             nounButton.backgroundColor = UIColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 0.5)
-            nounButton.setTitle(noun, for: UIControlState())
+            nounButton.setTitle(pronoun.name, for: UIControlState())
             nounButton.addTarget(self, action: #selector(InputViewController.selectNoun(_:)), for: UIControlEvents.touchUpInside)
             nounStackView.addArrangedSubview(nounButton)
         }
 
-        // let verbs = getVerbs()
         let verbs = eventsModel.verbs!
         for verb in verbs {
             let verbButton = UIButton(type: UIButtonType.system)
@@ -63,30 +62,33 @@ class InputViewController: UIViewController {
     @IBOutlet weak var timeStackView: UIStackView!
     
     @IBAction func selectTime(_ sender: UIButton) {
-        logEntry.time = sender.titleLabel!.text
+        newEvent.time = sender.titleLabel!.text
         enableSaveButton()
         clearButton.isEnabled = true
-        logText.text = logEntry.description
+        logText.text = newEvent.description
     }
 
     @IBOutlet weak var nounScrollView: UIScrollView!
     @IBOutlet weak var nounStackView: UIStackView!
     
     @IBAction func selectNoun(_ sender: UIButton) {
-        logEntry.noun = sender.titleLabel!.text
+        let eventNoun = eventsModel.findNoun(id: sender.titleLabel!.text!)
+        newEvent.noun = eventNoun!
         enableSaveButton()
         clearButton.isEnabled = true
-        logText.text = logEntry.description
+        logText.text = newEvent.description
     }
 
     @IBOutlet weak var verbScrollView: UIScrollView!
     @IBOutlet weak var verbStackView: UIStackView!
     
     @IBAction func selectVerb(_ sender: UIButton) {
-        logEntry.verb = sender.titleLabel!.text
+        let eventVerb = eventsModel.findVerb(id: sender.titleLabel!.text!)
+        newEvent.verb = eventVerb!
+
         enableSaveButton()
         clearButton.isEnabled = true
-        logText.text = logEntry.description
+        logText.text = newEvent.description
     }
     
     @IBOutlet weak var logText: UILabel!
@@ -97,18 +99,18 @@ class InputViewController: UIViewController {
 
     @IBAction func saveLog(_ sender: UIButton) {
         
-        // TODO:  Implement Save...
-        clearLog(sender)
+        _ = eventsModel.createEvent(when: Date(), primaryNoun: newEvent.noun!, verb: newEvent.verb!)
         
-        _ = eventsModel.createVerb(id: "test", name: "test")
         (UIApplication.shared.delegate as! AppDelegate).saveContext()
         
+        clearLog(sender)
+
     }
 
     @IBAction func clearLog(_ sender: UIButton) {
 
-        logEntry.clear()
-        logText.text = logEntry.description
+        newEvent.clear()
+        logText.text = newEvent.description
         
         logText.textColor = UIColor.gray
         
@@ -119,29 +121,15 @@ class InputViewController: UIViewController {
     
     
     private func enableSaveButton() {
-        if (logEntry.validate()) {
+        if (newEvent.validate()) {
             saveButton.isEnabled = true
         }
     }
     
-    fileprivate func getVerbs() -> [String] {
-        
-        let verbs = ["Cycled","Watched Netflix","Played Video Games","Worked on Sownata"]
-        return verbs
-        
-    }
-
     fileprivate func getTimes() -> [String] {
         
-        let times = ["Today","Just Now","Custom"]
+        let times = ["Now"]
         return times
-        
-    }
-
-    fileprivate func getNouns() -> [String] {
-        
-        let nouns = ["I"]
-        return nouns
         
     }
     

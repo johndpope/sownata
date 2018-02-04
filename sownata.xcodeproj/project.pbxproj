@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4E8137D11CCFC46D00F39E2A /* LogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8137D01CCFC46D00F39E2A /* LogEntry.swift */; };
+		4E8137D11CCFC46D00F39E2A /* NewEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8137D01CCFC46D00F39E2A /* NewEvent.swift */; };
 		4EA1936B1CCD050C00F212A4 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA1936A1CCD050C00F212A4 /* LaunchViewController.swift */; };
 		4EA1936D1CCD06AD00F212A4 /* DataTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */; };
 		4EA1936F1CCD073300F212A4 /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA1936E1CCD073300F212A4 /* InputViewController.swift */; };
@@ -28,9 +28,10 @@
 		C44F54411E84319B00837F4F /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54401E84319B00837F4F /* Value.swift */; };
 		C44F54431E8431A300837F4F /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54421E8431A300837F4F /* Measure.swift */; };
 		C44F54451E8431AD00837F4F /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44F54441E8431AD00837F4F /* Property.swift */; };
+		C45E78C2201FBADF00BC2675 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; };
+		C45E78C3201FBADF00BC2675 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C4703CC11E85319B00EBAB76 /* EventsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4703CC01E85319B00EBAB76 /* EventsModel.swift */; };
 		C4C63AF51FAF833E002ED68B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C63AF41FAF833E002ED68B /* Logger.swift */; };
-		C4F45F991FD9C07500F084C4 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42E09DE1EBCBA12007E6758 /* Charts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,10 +63,31 @@
 			remoteGlobalIDString = 06165F2E1D8110E600722320;
 			remoteInfo = ChartsTests;
 		};
+		C45E78C4201FBADF00BC2675 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C42E09D81EBCBA12007E6758 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C45E78C6201FBADF00BC2675 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C45E78C3201FBADF00BC2675 /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		4E8137D01CCFC46D00F39E2A /* LogEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogEntry.swift; sourceTree = "<group>"; };
+		4E8137D01CCFC46D00F39E2A /* NewEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewEvent.swift; sourceTree = "<group>"; };
 		4EA1936A1CCD050C00F212A4 /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataTabBarViewController.swift; sourceTree = "<group>"; };
 		4EA1936E1CCD073300F212A4 /* InputViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
@@ -102,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4F45F991FD9C07500F084C4 /* Charts.framework in Frameworks */,
+				C45E78C2201FBADF00BC2675 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,7 +174,7 @@
 				4ED990041CC69C5900198A8A /* Supporting Files */,
 				4ED98FD11CC68FE700198A8A /* DashboardViewController.swift */,
 				4ED98FD31CC68FE700198A8A /* Main.storyboard */,
-				4E8137D01CCFC46D00F39E2A /* LogEntry.swift */,
+				4E8137D01CCFC46D00F39E2A /* NewEvent.swift */,
 				4EA193701CCD07B100F212A4 /* ImportDataViewController.swift */,
 				4EA1936E1CCD073300F212A4 /* InputViewController.swift */,
 				4EA1936C1CCD06AD00F212A4 /* DataTabBarViewController.swift */,
@@ -234,10 +256,12 @@
 				4ED98FC81CC68FE700198A8A /* Sources */,
 				4ED98FC91CC68FE700198A8A /* Frameworks */,
 				4ED98FCA1CC68FE700198A8A /* Resources */,
+				C45E78C6201FBADF00BC2675 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C45E78C5201FBADF00BC2675 /* PBXTargetDependency */,
 			);
 			name = sownata;
 			productName = sownata;
@@ -389,7 +413,7 @@
 				4EA1936D1CCD06AD00F212A4 /* DataTabBarViewController.swift in Sources */,
 				C44F543D1E84316900837F4F /* Event.swift in Sources */,
 				4EA1936F1CCD073300F212A4 /* InputViewController.swift in Sources */,
-				4E8137D11CCFC46D00F39E2A /* LogEntry.swift in Sources */,
+				4E8137D11CCFC46D00F39E2A /* NewEvent.swift in Sources */,
 				C44F54381E8430FB00837F4F /* Verb.swift in Sources */,
 				C4C63AF51FAF833E002ED68B /* Logger.swift in Sources */,
 				4ED98FD21CC68FE700198A8A /* DashboardViewController.swift in Sources */,
@@ -432,6 +456,11 @@
 			isa = PBXTargetDependency;
 			target = 4ED98FCB1CC68FE700198A8A /* sownata */;
 			targetProxy = 4ED98FEC1CC68FE800198A8A /* PBXContainerItemProxy */;
+		};
+		C45E78C5201FBADF00BC2675 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = C45E78C4201FBADF00BC2675 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -500,7 +529,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -548,7 +577,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -560,30 +589,34 @@
 		4ED98FF51CC68FE800198A8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ARK7F8CZXC;
 				INFOPLIST_FILE = sownata/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		4ED98FF61CC68FE800198A8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ARK7F8CZXC;
 				INFOPLIST_FILE = sownata/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sownata;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

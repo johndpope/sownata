@@ -7,7 +7,6 @@
 //
 
 import CoreData
-import UIKit
 
 class EventsModel {
 
@@ -466,7 +465,7 @@ class EventsModel {
     // TODO:  Create a getTableData() function...
     
     //# TODO: - ?
-    var events: [Event]? {
+    public var events: [Event]? {
         let request: NSFetchRequest<Event> = Event.fetchRequest()
         let events = try? managedContext!.fetch(request)
         return events
